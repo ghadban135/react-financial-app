@@ -1,0 +1,14 @@
+.descText {
+  flex: 100%;
+  padding: 18.5%;
+  padding-left: 3%;
+  padding-right: 30%;
+  background-image: url("../../img/state0.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.backAndSignUp {
+  display: flex;
+  align-items: center;
+}
