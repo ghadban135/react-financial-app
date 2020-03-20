@@ -8,3 +8,20 @@
   align-items: center;
   flex-direction: row;
 }
+.boxContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  width: 60%;
+  color: whitesmoke;
+  background-color: #212121;
+}
+.boxContainer p {
+  margin: 10px;
+  font-weight: bolder;
+  text-align: center;
+}

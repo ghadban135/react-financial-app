@@ -1,5 +1,4 @@
 import * as React from "react";
-// import { SampleBase } from "../common/sample-base";
 import {
   AccumulationChartComponent,
   AccumulationSeriesCollectionDirective,
@@ -7,62 +6,58 @@ import {
   Inject,
   AccumulationDataLabel,
   PieSeries,
-  AccumulationTooltip
+  AccumulationTooltip,
+  AccumulationLegend
 } from "@syncfusion/ej2-react-charts";
-let data1 = [
-  //   { x: "USA", y: 46, text: "United States of America: 46" },
-  { x: "China", y: 99, text: "China: 26" },
-  { x: "Russia", y: 19, text: "Russia: 19" },
-  { x: "Germany", y: 17, text: "Germany: 17" },
-  { x: "Japan", y: 12, text: "Japan: 12" },
-  { x: "France", y: 10, text: "France: 10" },
-  { x: "South Korea", y: 9, text: "South Korea: 9" },
-  { x: "Great Britain", y: 27, text: "Great Britain: 27" },
-  { x: "Italy", y: 8, text: "Italy: 8" },
-  { x: "Australia", y: 8, text: "Australia: 8" },
-  { x: "Netherlands", y: 8, text: "Netherlands: 8" },
-  { x: "NewZealand", y: 4, text: "New Zealand: 4" },
-  { x: "Uzbekistan", y: 4, text: "Uzbekistan: 4" },
-  { x: "Kazakhstan", y: 3, text: "Kazakhstan: 3" },
-  { x: "Colombia", y: 3, text: "Colombia: 3" },
-  { x: "Switzerland", y: 3, text: "Switzerland: 3" },
-  { x: "Argentina", y: 3, text: "Argentina: 3" },
-  { x: "South Africa", y: 2, text: "South Africa: 2" },
-  { x: "North Korea", y: 2, text: "North Korea: 2" }
-];
-export class pieChart extends React.Component {
+
+export class PieChart extends React.Component {
   render() {
+    let data1 = this.props.transaction.map((item, index) => ({
+      categoryName: item.name,
+      categoryValue: item.percentage,
+      labelText: item.name + ": " + item.cost + " $"
+    }));
     return (
       <div className="control-pane">
         <div className="control-section">
           <AccumulationChartComponent
             style={{ textAlign: "center", width: "45%", height: "45%" }}
-            id="pie-chart"
-            title="Category"
+            // id="pie-chart"
+            title={this.props.title}
+            legendSettings={{
+              position: "Bottom",
+              visible: false, //if we want legend
+              height: "40",
+              width: "300"
+            }}
             tooltip={{
               enable: true,
+              header: "Category",
               format: "${point.x} : <b>${point.y}%</b>"
             }}
-            // load={this.load.bind(this)}
-            // legendSettings={{
-            //   visible: false
-            // }}
-            // loaded={this.onChartLoad.bind(this)}
           >
             <Inject
-              services={[AccumulationDataLabel, AccumulationTooltip, PieSeries]}
+              services={[
+                AccumulationDataLabel,
+                AccumulationTooltip,
+                PieSeries,
+                AccumulationLegend
+              ]}
             />
             <AccumulationSeriesCollectionDirective>
               <AccumulationSeriesDirective
                 name="Category"
                 dataSource={data1}
-                xName="x"
-                yName="y"
+                xName="categoryName"
+                yName="categoryValue"
+                innerRadius={this.props.innerRadius}
+                startAngle={this.props.startAngle}
+                endAngle={this.props.endAngle}
                 dataLabel={{
                   visible: true,
                   position: "Outside",
                   connectorStyle: { length: "10%" },
-                  name: "text"
+                  name: "labelText"
                 }}
               ></AccumulationSeriesDirective>
             </AccumulationSeriesCollectionDirective>
@@ -71,8 +66,5 @@ export class pieChart extends React.Component {
       </div>
     );
   }
-  //   onChartLoad(args) {
-  //     document.getElementById("pie-chart").setAttribute("title", "");
-  //   }
 }
-export default pieChart;
+export default PieChart;

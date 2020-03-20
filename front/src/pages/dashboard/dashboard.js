@@ -10,9 +10,42 @@ class dashBoard extends React.Component {
   render() {
     return (
       <div className="dashboardContainer">
-        <div className="boxContainer"></div>
+        <div className="boxContainer">
+          <p>
+            Overall Income
+            <br />
+            {this.props.overAllIncome}
+          </p>
+          <p>
+            overall Spent
+            <br />
+            {this.props.overAllSpent}
+          </p>
+          <p>
+            Most Spent
+            <br />
+            {this.props.mostSpent}
+          </p>
+          <p>
+            Budget
+            <br />
+            {this.props.budget}
+          </p>
+        </div>
+        <div>
+          <PieChart
+            transaction={this.props.transaction}
+            // endAngle="90"
+            // startAngle="270"
+            innerRadius="55%"
+            title="Budget (Current Month)"
+          />
+        </div>
+        <div style={{ width: "100%", textAlign: "center", fontWeight: "400" }}>
+          Breakdown (Current Year) <hr />
+        </div>
         <div className="chartContainer">
-          <PieChart />
+          <PieChart transaction={this.props.transaction} title="Category" />
           <BarChart />
         </div>
       </div>
