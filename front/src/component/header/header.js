@@ -11,6 +11,7 @@ function Header() {
         <Nav.Link href="income">Incomes</Nav.Link>
         <Nav.Link href="expense">Expenses</Nav.Link>
         <Nav.Link href="savingPlan">Saving Plans</Nav.Link>
+        <Nav.Link href="settings">Settings</Nav.Link>
       </Nav>
     </Navbar>
   );

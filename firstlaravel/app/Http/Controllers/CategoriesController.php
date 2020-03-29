@@ -14,7 +14,20 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        $result = Categories::all();
+
+        if(!$result){
+            return response()->json([
+                'success' => false,
+                'message' => 'No categories found'
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'categories' => $result,
+        ], 200);
+
     }
 
     /**
@@ -25,7 +38,15 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $inputs = $request->all();
+        $result = new Categories();
+        $result->fill($inputs);
+        $result->save();
+
+        return response()->json([
+            'success' => true,
+            'categories' => $result
+        ], 201);
     }
 
     /**
@@ -36,7 +57,21 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        //
+         $result = Categories::select('id','name')
+         ->where('users_id', $id)->get();
+
+        if(!sizeof($result)){
+            return response()->json([
+                'success' => true,
+                'categories' => 'No categories found for this user'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'categories' => $result,
+        ], 200);
+
     }
 
     /**
@@ -48,7 +83,16 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $inputs = $request->all();
+        $result = Categories::where('id', $id)->first();
+
+        $result->update($inputs);
+        $result->save();
+
+        return response()->json([
+            'success' => true,
+            'categories' => $result
+        ], 201);
     }
 
     /**
@@ -59,6 +103,10 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Categories::where('id', $id)->delete();
+
+        return response()->json([
+            'success' => true,
+        ], 204);
     }
 }

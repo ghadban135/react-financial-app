@@ -13,11 +13,11 @@ import {
   MDBFormInline
 } from "mdbreact";
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" }
-];
+// const options = [
+//   { value: "chocolate", label: "Chocolate" },
+//   { value: "strawberry", label: "Strawberry" },
+//   { value: "vanilla", label: "Vanilla" }
+// ];
 const currencyOptions = [
   { value: "DOLLAR", label: "$" },
   { value: "LBP", label: "LBP" },
@@ -29,7 +29,9 @@ class ExpenseForm extends React.Component {
     dueDate: "none",
     radio: "",
     selectedOption: null,
-    selectedCurrencyOption: null
+    selectedCurrencyOption: null,
+    users_id: 1,
+    options: []
   };
   handleChange = selectedOption => {
     this.setState({ selectedOption });
@@ -46,6 +48,30 @@ class ExpenseForm extends React.Component {
       dueDate: dis
     });
   };
+
+  getCategories = async () => {
+    const response = await fetch(
+      `http://localhost:8000/api/categories/${this.state.users_id}`
+    );
+    const result = await response.json();
+
+    if (result.success) {
+      this.setState({
+        options: result.categories.map(item => {
+          const currentCategory = {
+            value: item.name,
+            label: item.name
+          };
+          return currentCategory;
+        })
+      });
+    }
+  };
+
+  async componentDidMount() {
+    this.getCategories();
+  }
+
   render() {
     const { selectedOption } = this.state;
     const { selectedCurrencyOption } = this.state;
@@ -123,7 +149,7 @@ class ExpenseForm extends React.Component {
                         <Select
                           value={selectedOption}
                           onChange={this.handleChange}
-                          options={options}
+                          options={this.state.options}
                           placeholder="category..."
                         />
                       </div>

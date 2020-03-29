@@ -18,6 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/categories', 'CategoriesController@index');
+Route::get('/categories/{id}', 'CategoriesController@show');
+Route::post('/categories/{id}', 'CategoriesController@update');
+Route::post('/categories', 'CategoriesController@store');
+Route::delete('/categories/{id}', 'CategoriesController@destroy');
+
 Route::get('/tasks', 'TaskController@index');
 Route::get('/task/{id}', 'TaskController@show');
 Route::post('/task/{id}', 'TaskController@update');

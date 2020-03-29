@@ -7,6 +7,7 @@ import SavingPlan from "./pages/savingPlan/savingPlan";
 import Header from "./component/header/header";
 import Footer from "./component/footer/footer";
 import LandingPage from "./pages/landing page/landing";
+import Setting from "./pages/settings/settings";
 
 class App extends React.Component {
   constructor(props) {
@@ -54,6 +55,7 @@ class App extends React.Component {
               <Route exact path="/income" component={Income} />
               <Route exact path="/expense" component={Expense} />
               <Route exact path="/savingPlan" component={SavingPlan} />
+              <Route exact path="/settings" component={Setting} />
             </Switch>
             <Footer />
           </div>
