@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTaskRequest;
-use App\Task;
+use App\Users;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class TaskController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,30 +14,18 @@ class TaskController extends Controller
      */
     public function index()
     {
+        $users = Users::all();
 
-        //  $test = DB::select('select * from tasks where name = ?', ['awertt']);
-        //  DB::table('tasks')->where('name', '=','awertt')->dd();
-
-// $test = DB::table('tasks')->where('name', 'awertt')->value('description');
-
-// $test = Task::orderBy('name', 'desc')->get();
-
-// $test = Task::select('name', 'description as desc')
-//                 ->where('name', 'awertt')->first();
-
-        $tasks = Task::all();
-
-        if(!$tasks){
+        if(!$users){
             return response()->json([
                 'status' => 'failed',
-                'message' => 'No tasks found'
+                'message' => 'No users found'
             ], 500);
         }
 
         return response()->json([
             'status' => 'success',
-            'tasks' => $tasks,
-            // 'test'=> $test
+            'users' => $users
         ], 200);
     }
 
@@ -51,21 +37,15 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-    //     DB::table('tasks')->insert(
-    // ['name' => 'johnexamplem', 'description' => 'knk']
-    // );
-
         $inputs = $request->all();
-// dd($inputs);
-        $task = new Task();
-        // $task->name=$inputs['name'];
-        // $task->description=$inputs['description'];
-        $task->fill($inputs);
-        $task->save();
+
+        $users = new Users();
+        $users->fill($inputs);
+        $users->save();
 
         return response()->json([
             'status' => 'success',
-            'task' => $task
+            'users' => $users
         ], 201);
     }
 
@@ -77,11 +57,11 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        $task = Task::where('id', $id)->first();
-                //  $task = Task::find($id);
+        $users = Users::where('id', $id)->first();
+
         return response()->json([
             'status' => 'success',
-            'task' => $task
+            'users' => $users
         ], 200);
     }
 
@@ -95,14 +75,14 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
         $inputs = $request->all();
-        $task = Task::where('id', $id)->first();
+        $users = Users::where('id', $id)->first();
 
-        $task->update($inputs);
-        $task->save();
+        $users->update($inputs);
+        $users->save();
 
         return response()->json([
             'status' => 'success',
-            'task' => $task
+            'users' => $users
         ], 201);
     }
 
@@ -114,7 +94,7 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-         Task::where('id', $id)->delete();
+        $users = Users::where('id', $id)->delete();
 
         return response()->json([
             'status' => 'success',

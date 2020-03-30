@@ -18,8 +18,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/tasks', 'TaskController@index');
-Route::get('/task/{id}', 'TaskController@show');
-Route::post('/task/{id}', 'TaskController@update');
-Route::post('/task', 'TaskController@store');
-Route::delete('/task/{id}', 'TaskController@destroy');
+Route::get('/incomes', 'TransactionsController@incomeIndex');
+Route::get('/expenses', 'TransactionsController@expenseIndex');
+Route::get('/savingPlans', 'TransactionsController@savingPlanIndex');
+Route::get('/transaction/{id}', 'TransactionsController@show');
+Route::post('/transaction', 'TransactionsController@create');
+Route::post('/transaction/{id}', 'TransactionsController@update');
+Route::delete('/transaction/{id}', 'TransactionsController@destroy');
+
+Route::get('/currencies', 'CurrenciesController@index');
+Route::get('/currency/{id}', 'CurrenciesController@show');
+Route::post('/currency', 'CurrenciesController@store');
+Route::post('/currency/{id}', 'CurrenciesController@update');
+Route::delete('/currency/{id}', 'CurrenciesController@destroy');
+
+Route::get('/users', 'UsersController@index');
+Route::get('/user/{id}', 'UsersController@show');
+Route::post('/user', 'UsersController@store');
+Route::post('/user/{id}', 'UsersController@update');
+Route::delete('/user/{id}', 'UsersController@destroy');
