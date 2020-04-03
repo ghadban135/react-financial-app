@@ -17,6 +17,7 @@ import {
   MDBModalFooter,
   MDBModalHeader
 } from "mdbreact";
+import LandingPage from "../landing page/landing";
 
 const CurrencyOptions = [
   { value: "Weekly", label: "Weekly" },
@@ -34,8 +35,10 @@ class Setting extends React.Component {
       name: "",
       editValueIndex: "",
       editValue: ""
+      // token: ""
     };
   }
+
   onChangeCategoryName = e => {
     this.setState({ editValue: e.target.value });
   };
@@ -72,10 +75,18 @@ class Setting extends React.Component {
   };
 
   getCategories = async () => {
-    const response = await fetch(
-      `http://localhost:8000/api/categories/${this.state.users_id}`
-    );
+    // const token = localStorage.token;
+    const response = await fetch(`http://localhost:8000/api/categories`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+
     const result = await response.json();
+    // debugger;
     if (result.success) {
       this.setState({
         data: result.categories.map(item => {
@@ -91,6 +102,10 @@ class Setting extends React.Component {
 
   async componentDidMount() {
     this.getCategories();
+    // const token = localStorage.token;
+    // const token = localStorage.getItem("token"); //same as above
+    // this.setState({ token });
+    // debugger;
   }
   render() {
     const columns = [
@@ -264,7 +279,7 @@ class Setting extends React.Component {
               <input
                 type="submit"
                 value="Submit"
-                class="btn btn-outline-primary "
+                className="btn btn-outline-primary "
               />
             </form>
           </div>

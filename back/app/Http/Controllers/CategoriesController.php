@@ -10,7 +10,7 @@ class CategoriesController extends Controller
      public function index()
     {
          $userId = auth()->user()->id;
-        $result = Category::where('user_id',$userId)->get();
+        $result = Category::where('users_id',$userId)->get();
 
         if(!$result){
             return response()->json([
@@ -126,6 +126,6 @@ class CategoriesController extends Controller
             'test' => $result
             ], 204);
         }
-        
+
     }
 }
