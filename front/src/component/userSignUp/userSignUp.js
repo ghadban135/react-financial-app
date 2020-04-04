@@ -14,7 +14,7 @@ import {
   MDBModal,
   MDBModalBody,
   MDBModalFooter,
-  MDBModalHeader
+  MDBModalHeader,
 } from "mdbreact";
 import SignIN from "../signin/signin";
 
@@ -22,7 +22,7 @@ class FormPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: false
+      show: false,
     };
   }
   handleShow = () => {
@@ -42,7 +42,7 @@ class FormPage extends React.Component {
               style={{
                 backgroundImage:
                   "url(https://mdbootstrap.com/img/Photos/Others/pricing-table7.jpg)",
-                width: "24rem"
+                width: "24rem",
               }}
             >
               <div className="text-white rgba-stylish-strong py-5 px-5 z-depth-4">
@@ -89,17 +89,13 @@ class FormPage extends React.Component {
                 <MDBCol md="12">
                   <p className="font-small white-text d-flex justify-content-end">
                     Have an account?
-                    <a href="#!" className="green-text ml-1 font-weight-bold">
-                      Log in
-                    </a>
                     <MDBBtn
                       // outline
+                      style={{ margin: "-4px", marginLeft: "5px" }}
                       size="sm"
                       color="cyan"
                       onClick={() => {
-                        // this.setState({});
                         this.handleShow();
-                        // this.showLogin();
                       }}
                     >
                       LogIn

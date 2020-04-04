@@ -15,13 +15,12 @@ import {
   MDBModal,
   MDBModalBody,
   MDBModalFooter,
-  MDBModalHeader
+  MDBModalHeader,
 } from "mdbreact";
-import LandingPage from "../landing page/landing";
 
 const CurrencyOptions = [
   { value: "Weekly", label: "Weekly" },
-  { value: "Monthly", label: "Monthly" }
+  { value: "Monthly", label: "Monthly" },
 ];
 
 class Setting extends React.Component {
@@ -29,17 +28,16 @@ class Setting extends React.Component {
     super(props);
     this.state = {
       selectedCurrency: null,
-      users_id: 1,
       data: [],
       show: false,
       name: "",
       editValueIndex: "",
-      editValue: ""
+      editValue: "",
       // token: ""
     };
   }
 
-  onChangeCategoryName = e => {
+  onChangeCategoryName = (e) => {
     this.setState({ editValue: e.target.value });
   };
   handleShow = () => {
@@ -48,21 +46,25 @@ class Setting extends React.Component {
   handleClose = () => {
     this.setState({ show: false });
   };
-  handleCurrencyChange = selectedCurrency => {
+  handleCurrencyChange = (selectedCurrency) => {
     this.setState({ selectedCurrency });
     console.log(`Option selected:`, selectedCurrency);
   };
 
-  onSubmit = async e => {
+  onSubmit = async (e) => {
     e.preventDefault();
     const body = new FormData();
     body.append("name", this.state.editValue);
-    // body.append("users_id", this.state.users_id);
+    // debugger;
     const response = await fetch(
-      `http://localhost:8000/api/categories/${this.state.editValueIndex}`,
+      `http://localhost:8000/api/category/${this.state.editValueIndex}`,
       {
         method: "POST",
-        body
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: "application/json",
+        },
+        body,
       }
     );
     const result = await response.json();
@@ -80,22 +82,21 @@ class Setting extends React.Component {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     });
 
     const result = await response.json();
     // debugger;
     if (result.success) {
       this.setState({
-        data: result.categories.map(item => {
+        data: result.categories.map((item) => {
           const currentCategory = {
             id: item.id,
-            name: item.name
+            name: item.name,
           };
           return currentCategory;
-        })
+        }),
       });
     }
   };
@@ -115,12 +116,12 @@ class Setting extends React.Component {
         options: {
           display: false,
           filter: false,
-          viewColumns: false
-        }
+          viewColumns: false,
+        },
       },
       {
         name: "name",
-        label: "Name"
+        label: "Name",
       },
       {
         name: "Edit",
@@ -139,7 +140,7 @@ class Setting extends React.Component {
                   onClick={() => {
                     this.setState({
                       editValueIndex: tableMeta.rowData[0],
-                      editValue: tableMeta.rowData[1]
+                      editValue: tableMeta.rowData[1],
                     });
                     this.handleShow();
                   }}
@@ -184,8 +185,8 @@ class Setting extends React.Component {
                 )}
               </div>
             );
-          }
-        }
+          },
+        },
       },
       {
         name: "Delete",
@@ -206,13 +207,17 @@ class Setting extends React.Component {
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonText: "Yes, delete it!",
-                    cancelButtonText: "No, keep it"
-                  }).then(async result => {
+                    cancelButtonText: "No, keep it",
+                  }).then(async (result) => {
                     if (result.value) {
                       const response = await fetch(
-                        `http://localhost:8000/api/categories/${tableMeta.rowData[0]}`,
+                        `http://localhost:8000/api/category/${tableMeta.rowData[0]}`,
                         {
-                          method: "DELETE"
+                          method: "DELETE",
+                          headers: {
+                            Authorization: `Bearer ${localStorage.token}`,
+                            Accept: "application/json",
+                          },
                         }
                       ).then(async () => {
                         this.getCategories();
@@ -236,9 +241,9 @@ class Setting extends React.Component {
                 Delete
               </MDBBtn>
             );
-          }
-        }
-      }
+          },
+        },
+      },
     ];
 
     const { selectedCurrency } = this.state;
@@ -248,7 +253,7 @@ class Setting extends React.Component {
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-evenly"
+            justifyContent: "space-evenly",
           }}
         >
           <div
@@ -257,7 +262,7 @@ class Setting extends React.Component {
               padding: "40px",
               // backgroundColor: "#efefef",
               boxShadow:
-                "0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)"
+                "0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)",
             }}
           >
             <h4>General Settings</h4>
@@ -285,7 +290,7 @@ class Setting extends React.Component {
           </div>
           <div
             style={{
-              margin: "30px 0"
+              margin: "30px 0",
             }}
           >
             <NewTable

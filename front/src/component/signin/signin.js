@@ -13,7 +13,7 @@ import {
   MDBModal,
   MDBModalBody,
   MDBModalFooter,
-  MDBModalHeader
+  MDBModalHeader,
 } from "mdbreact";
 
 class SignIN extends React.Component {
@@ -21,67 +21,24 @@ class SignIN extends React.Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
     };
   }
-  onChangeEmail = e => {
+  onChangeEmail = (e) => {
     this.setState({ email: e.target.value });
   };
-  onChangePassword = e => {
+  onChangePassword = (e) => {
     this.setState({ password: e.target.value });
   };
-  /* onSubmit(e) {
-      e.preventDefault();
-      const expense = {
-        name: this.state.name,
-        users_id: this.state.users_id
-      };
-      axios
-        .post("http://localhost:8000/api/categories/", expense)
-        .then(res => console.log(res.data));
-      // console.log(`Expense successfully created!`);
-      // console.log(`Name: ${this.state.name}`);
-      // console.log(`Amount: ${this.state.amount}`);
-      // console.log(`Description: ${this.state.description}`);
-      Swal.fire("Good job!", "Expense Added Successfully", "success");
-      this.setState({ name: "" });
-    } */
-  //     .
-  //     .
-  //     .
-  //     Swal.mixin({
-  //         toast: true,
-  //         position: 'top-end',
-  //         showConfirmButton: false,
-  //         timer: 3000,
-  //         timerProgressBar: true,
-  //         onOpen: (toast) => {
-  //             toast.addEventListener('mouseenter', Swal.stopTimer)
-  //             toast.addEventListener('mouseleave', Swal.resumeTimer)
-  //         }
-  // })
 
-  // Toast.fire({
-  //     icon: 'success',
-  //     title: 'Signed in successfully'
-  // })
-  // .
-  // .
-  onSubmit = async e => {
+  onSubmit = async (e) => {
     e.preventDefault();
-    // const headers = new Authorization();
-    // headers.append("Authorization", jwt);
     const body = new FormData();
     body.append("email", this.state.email);
     body.append("password", this.state.password);
     const response = await fetch(`http://localhost:8000/api/login`, {
       method: "POST",
-      //   headers: {
-      //     Authorization: token,
-      //     "Content-Type": "application/json",
-      //     Accept: "application/json"
-      //   },
-      body
+      body,
     });
 
     const result = await response.json();
@@ -96,15 +53,15 @@ class SignIN extends React.Component {
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
-        onOpen: toast => {
+        onOpen: (toast) => {
           toast.addEventListener("mouseenter", Swal.stopTimer);
           toast.addEventListener("mouseleave", Swal.resumeTimer);
-        }
+        },
       });
 
       Toast.fire({
         icon: "success",
-        title: "Signed in successfully"
+        title: "Signed in successfully",
       });
     }
   };

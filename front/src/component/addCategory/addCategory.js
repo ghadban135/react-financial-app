@@ -1,5 +1,4 @@
 import React from "react";
-// import axios from 'axios';
 import Swal from "sweetalert2";
 
 class AddCategory extends React.Component {
@@ -7,36 +6,23 @@ class AddCategory extends React.Component {
     super(props);
     this.state = {
       name: "",
-      users_id: 1
     };
   }
-  onChangeCategoryName = e => {
+  onChangeCategoryName = (e) => {
     this.setState({ name: e.target.value });
   };
-  /* onSubmit(e) {
-    e.preventDefault();
-    const expense = {
-      name: this.state.name,
-      users_id: this.state.users_id
-    };
-    axios
-      .post("http://localhost:8000/api/categories/", expense)
-      .then(res => console.log(res.data));
-    // console.log(`Expense successfully created!`);
-    // console.log(`Name: ${this.state.name}`);
-    // console.log(`Amount: ${this.state.amount}`);
-    // console.log(`Description: ${this.state.description}`);
-    Swal.fire("Good job!", "Expense Added Successfully", "success");
-    this.setState({ name: "" });
-  } */
-  onSubmit1 = async e => {
+  onSubmit1 = async (e) => {
     e.preventDefault();
     const body = new FormData();
+    // debugger;
     body.append("name", this.state.name);
-    body.append("users_id", this.state.users_id);
-    const response = await fetch(`http://localhost:8000/api/categories`, {
+    const response = await fetch(`http://localhost:8000/api/category`, {
       method: "POST",
-      body
+      body,
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: "application/json",
+      },
     });
     const result = await response.json();
     this.setState({ name: "" });
