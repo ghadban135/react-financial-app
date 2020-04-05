@@ -3,7 +3,7 @@ import "./insertSavingPlanForm.css";
 import {
   MDBContainer,
   MDBBtn,
-  MDBModal
+  MDBModal,
   //   MDBModalBody,
   //   MDBModalHeader,
   //   MDBModalFooter
@@ -13,12 +13,12 @@ import SavingPlanForm from "./insertSavingPlanForm";
 
 class PopupSavingPlanForm extends Component {
   state = {
-    modal: false
+    modal: false,
   };
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
     });
   };
 
@@ -29,7 +29,7 @@ class PopupSavingPlanForm extends Component {
           add new saving Plan
         </MDBBtn>
         <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
-          <SavingPlanForm></SavingPlanForm>
+          <SavingPlanForm handleClose={this.toggle} />
         </MDBModal>
       </MDBContainer>
     );
