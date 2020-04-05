@@ -5,12 +5,12 @@ import IncomeForm from "./insertIncomeForm";
 
 class PopupIncomeForm extends Component {
   state = {
-    modal: false
+    modal: false,
   };
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
     });
   };
 
@@ -21,7 +21,7 @@ class PopupIncomeForm extends Component {
           add new income
         </MDBBtn>
         <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
-          <IncomeForm />
+          <IncomeForm handleClose={this.toggle} />
         </MDBModal>
       </MDBContainer>
     );

@@ -1,5 +1,6 @@
 import React from "react";
 import Select from "react-select";
+import Swal from "sweetalert2";
 import "./insertIncomeForm.css";
 
 import {
@@ -10,10 +11,10 @@ import {
   MDBBtn,
   MDBCard,
   MDBCardBody,
-  MDBFormInline
+  MDBFormInline,
 } from "mdbreact";
 
-// const options = [
+// const CategoryOptions = [
 //   { value: "chocolate", label: "Chocolate" },
 //   { value: "strawberry", label: "Strawberry" },
 //   { value: "vanilla", label: "Vanilla" }
@@ -21,23 +22,35 @@ import {
 const currencyOptions = [
   { value: "DOLLAR", label: "$" },
   { value: "LBP", label: "LBP" },
-  { value: "EURO", label: "€" }
+  { value: "EURO", label: "€" },
 ];
 
 class IncomeForm extends React.Component {
   state = {
-    dueDate: "none",
+    showDueDate: "none",
     radio: "",
-    selectedOption: null,
-    selectedCurrencyOption: null,
-    users_id: 1,
-    options: []
+    selectedCategory: "",
+    selectedCurrencyOption: "",
+    CategoryOptions: [],
+    type: "income",
+    title: "",
+    StartDate: "",
+    DueDate: "",
+    amount: "",
+    description: "",
   };
-  handleChange = selectedOption => {
-    this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
+  // handleChange = (selectedOption) => {
+  //   this.setState({ selectedOption });
+  //   console.log(`Option selected:`, selectedOption);
+  // };
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   };
-  handleChangeCurrency = selectedCurrencyOption => {
+  handleChangeCategory = (selectedCategory) => {
+    this.setState({ selectedCategory });
+    console.log(`Option selected:`, selectedCategory);
+  };
+  handleChangeCurrency = (selectedCurrencyOption) => {
     this.setState({ selectedCurrencyOption });
     console.log(`currency selected:`, selectedCurrencyOption);
   };
@@ -45,36 +58,76 @@ class IncomeForm extends React.Component {
   onClick = (nr, dis) => () => {
     this.setState({
       radio: nr,
-      dueDate: dis
+      showDueDate: dis,
     });
   };
 
   getCategories = async () => {
-    const response = await fetch(
-      `http://localhost:8000/api/categories/${this.state.users_id}`
-    );
+    const response = await fetch(`http://localhost:8000/api/categories`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: "application/json",
+      },
+    });
     const result = await response.json();
 
     if (result.success) {
       this.setState({
-        options: result.categories.map(item => {
+        CategoryOptions: result.categories.map((item) => {
           const currentCategory = {
-            value: item.name,
-            label: item.name
+            value: item.id,
+            label: item.name,
           };
           return currentCategory;
-        })
+        }),
       });
     }
   };
+  onSubmit = async (e) => {
+    e.preventDefault();
+    const body = new FormData();
+    // debugger;
+    body.append("title", this.state.title);
+    body.append("start_date", this.state.StartDate);
+    body.append("end_date", this.state.DueDate);
+    body.append("amount", this.state.amount);
+    body.append("description", this.state.description);
+    body.append("type", this.state.type);
+    body.append("categories_id", this.state.selectedCategory.value);
+    body.append("currencies_id", 1);
+    // debugger;
+    //we need to fix currencies like categories or get currency from user
+    const response = await fetch(`http://localhost:8000/api/transaction`, {
+      method: "POST",
+      body,
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+      },
+    });
+    const result = await response.json();
+    this.setState({
+      title: "",
+      StartDate: "",
+      DueDate: null,
+      amount: "",
+      description: "",
+      selectedCategory: "",
+    });
+    if (result.success) {
+      this.closeModal();
+      Swal.fire("Good job!", "Income Added Successfully", "success");
+    }
+  };
+  closeModal() {
+    this.props.handleClose();
+  }
 
   async componentDidMount() {
     this.getCategories();
   }
 
   render() {
-    const { selectedOption } = this.state;
-    const { selectedCurrencyOption } = this.state;
     let yyyy = new Date().getFullYear();
     let mm = new Date().getMonth() + 1;
     let dd = new Date().getDate();
@@ -92,7 +145,7 @@ class IncomeForm extends React.Component {
           <MDBCol md="12">
             <MDBCard>
               <MDBCardBody>
-                <form>
+                <form onSubmit={this.onSubmit}>
                   <p className="h4 text-center py-4">Add New Income</p>
                   <div className="grey-text">
                     <MDBRow center>
@@ -100,11 +153,15 @@ class IncomeForm extends React.Component {
                         style={{ width: "67%", marginBottom: "0" }}
                         label="Title"
                         icon="book-open"
+                        required
                         group
                         type="text"
                         validate
                         error="wrong"
                         success="right"
+                        name="title"
+                        value={this.state.title}
+                        onChange={this.handleChange}
                       />
                       <MDBRow>
                         <div>
@@ -115,15 +172,19 @@ class IncomeForm extends React.Component {
                             group
                             type="date"
                             validate
+                            required
                             error="wrong"
                             success="right"
                             max={currentDate}
+                            name="StartDate"
+                            value={this.state.StartDate}
+                            onChange={this.handleChange}
                           />
                         </div>
                         <div
                           style={{
-                            display: this.state.dueDate,
-                            marginLeft: "25px"
+                            display: this.state.showDueDate,
+                            marginLeft: "25px",
                           }}
                         >
                           <MDBInput
@@ -135,6 +196,9 @@ class IncomeForm extends React.Component {
                             validate
                             error="wrong"
                             success="right"
+                            name="DueDate"
+                            value={this.state.DueDate}
+                            onChange={this.handleChange}
                           />
                         </div>
                       </MDBRow>
@@ -142,14 +206,14 @@ class IncomeForm extends React.Component {
                     <MDBRow center>
                       <div
                         style={{
-                          width: "80%"
+                          width: "80%",
                         }}
                       >
                         {/* <MDBIcon icon="list-ol" size="lg" /> */}
                         <Select
-                          value={selectedOption}
-                          onChange={this.handleChange}
-                          options={this.state.options}
+                          value={this.state.selectedCategory}
+                          onChange={this.handleChangeCategory}
+                          options={this.state.CategoryOptions}
                           placeholder="category..."
                         />
                       </div>
@@ -157,13 +221,13 @@ class IncomeForm extends React.Component {
                     <MDBRow
                       center
                       style={{
-                        margin: "10px -15px"
+                        margin: "10px -15px",
                       }}
                     >
                       <MDBInput
                         style={{
                           width: "70%",
-                          marginBottom: "0"
+                          marginBottom: "0",
                         }}
                         label="Amount"
                         icon="money-bill-alt"
@@ -171,15 +235,19 @@ class IncomeForm extends React.Component {
                         group
                         type="number"
                         validate
+                        required
+                        name="amount"
+                        value={this.state.amount}
+                        onChange={this.handleChange}
                       />
                       <div
                         style={{
                           paddingTop: "6%",
-                          width: "25%"
+                          width: "25%",
                         }}
                       >
                         <Select
-                          value={selectedCurrencyOption}
+                          value={this.state.selectedCurrencyOption}
                           onChange={this.handleChangeCurrency}
                           options={currencyOptions}
                           placeholder="Currency"
@@ -211,6 +279,9 @@ class IncomeForm extends React.Component {
                       rows="2"
                       label="Your message"
                       icon="pencil-alt"
+                      name="description"
+                      value={this.state.description}
+                      onChange={this.handleChange}
                     />
                   </div>
                   <div className="text-center py-4 mt-3 incomeButtonPad">
