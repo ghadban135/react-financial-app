@@ -62,7 +62,7 @@ class TransactionsController extends Controller
             'status' => true,
             'Saving Plans' => $transactions
         ], 200);
-    }        
+    }
     // public function pieChartTest()
     //    {
     //     $transactions = Transaction::select('type', 'savingPlan')->first();
@@ -100,12 +100,12 @@ class TransactionsController extends Controller
         // $transaction->save();
                 if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transaction' => $transactions
         ], 201);
     }

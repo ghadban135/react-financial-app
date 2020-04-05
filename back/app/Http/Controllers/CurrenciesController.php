@@ -15,7 +15,6 @@ class CurrenciesController extends Controller
     public function index()
     {
         $currencies = Currency::all();
-        
         if(!$currencies){
             return response()->json([
                 'status' => false,

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Table from "../../component/testt";
-import ExpenseForm from "../../component/insertExpenseForm/popupExpenseForm";
 import AddCategory from "../../component/addCategory/addCategory";
+import PopupExpenseForm from "../../component/insertExpenseForm/popupExpenseForm";
 
 class expense extends React.Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class expense extends React.Component {
     return (
       <>
         <div style={{ display: "flex" }}>
-          <ExpenseForm />
+          <PopupExpenseForm />
           <AddCategory />
         </div>
         <Table />

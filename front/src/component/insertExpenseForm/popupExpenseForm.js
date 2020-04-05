@@ -5,15 +5,14 @@ import "./insertExpenseForm.css";
 
 class PopupExpenseForm extends Component {
   state = {
-    modal: false
+    modal: false,
   };
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
     });
   };
-
   render() {
     return (
       <MDBContainer>
@@ -21,7 +20,7 @@ class PopupExpenseForm extends Component {
           add new expense
         </MDBBtn>
         <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
-          <ExpenseForm></ExpenseForm>
+          <ExpenseForm handleClose={this.toggle}></ExpenseForm>
         </MDBModal>
       </MDBContainer>
     );

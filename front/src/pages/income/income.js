@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Table from "../../component/testt";
-import IncomeForm from "../../component/insertIncomeForm/popupIncomeForm";
 import AddCategory from "../../component/addCategory/addCategory";
+import PopupIncomeForm from "../../component/insertIncomeForm/popupIncomeForm";
 class income extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +11,7 @@ class income extends React.Component {
     return (
       <>
         <div style={{ display: "flex" }}>
-          <IncomeForm className="popupIncome" />
+          <PopupIncomeForm />
           <AddCategory />
         </div>
         <Table />

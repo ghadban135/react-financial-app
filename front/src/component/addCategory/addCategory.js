@@ -9,7 +9,7 @@ class AddCategory extends React.Component {
     };
   }
   onChangeCategoryName = (e) => {
-    this.setState({ name: e.target.value });
+    this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit1 = async (e) => {
     e.preventDefault();
@@ -38,6 +38,7 @@ class AddCategory extends React.Component {
         <input
           type="text"
           placeholder="ADD Category .."
+          name="name"
           value={this.state.name}
           onChange={this.onChangeCategoryName}
         />
