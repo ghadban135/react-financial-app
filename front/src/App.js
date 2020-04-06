@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import DashBoard from "./pages/dashboard/dashboard";
 import Income from "./pages/income/income";
 import Expense from "./pages/expense/expense";
@@ -27,8 +27,8 @@ class App extends React.Component {
         { name: "Expense 2", cost: 100, type: "expense", percentage: 10 },
         { name: "Expense 3", cost: 125, type: "expense", percentage: 12.5 },
         { name: "Expense 4", cost: 225, type: "expense", percentage: 22.5 },
-        { name: "Saving Plan1", cost: 500, type: "savingPlan", percentage: 50 }
-      ]
+        { name: "Saving Plan1", cost: 500, type: "savingPlan", percentage: 50 },
+      ],
     };
   }
   render() {
@@ -38,6 +38,17 @@ class App extends React.Component {
         <BrowserRouter>
           <div>
             <Switch>
+              {/* <Route
+                exact
+                path="/"
+                render={() =>
+                  localStorage.token ? (
+                    <Redirect to="/dashboard" />
+                  ) : (
+                    <Redirect to="/" />
+                  )
+                }
+              /> */}
               <Route exact path="/" component={LandingPage} />
               <Route
                 exact
