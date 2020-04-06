@@ -116,7 +116,7 @@ class FormPage extends React.Component {
                         >
                           LogIn Form
                         </MDBModalHeader>
-                        <SignIN />
+                        <SignIN handleClose={this.handleClose} />
                       </MDBModal>
                     )}
                   </p>

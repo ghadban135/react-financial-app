@@ -47,6 +47,7 @@ class SignIN extends React.Component {
     // debugger;
     if (result.access_token) {
       localStorage.setItem("token", result.access_token);
+      this.closeModal();
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -63,8 +64,14 @@ class SignIN extends React.Component {
         icon: "success",
         title: "Signed in successfully",
       });
+    } else {
+      Swal.fire("Cancelled", " Invalid Email or password.", "error");
     }
   };
+
+  closeModal() {
+    this.props.handleClose();
+  }
   render() {
     return (
       <form onSubmit={this.onSubmit} style={{ color: "black" }}>
