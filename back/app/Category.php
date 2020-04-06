@@ -12,8 +12,4 @@ class Category extends Model
     protected $fillable = [
         'name', 'users_id'
     ];
-            public function category()
-{
-return $this->hasOne(Transaction::class, 'categories_id', 'id');
-}
 }

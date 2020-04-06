@@ -31,7 +31,7 @@ Route::post('/transaction', 'TransactionsController@create');
 Route::post('/transaction/{id}', 'TransactionsController@update');
 Route::delete('/transaction/{id}', 'TransactionsController@destroy');
 
-Route::get('/pieChart', 'TransactionsController@transactionPersantage');
+Route::get('/pieChart', 'TransactionsController@transactionPercentage');
 
 Route::get('/currencies', 'CurrenciesController@index');
 Route::get('/currency/{id}', 'CurrenciesController@show');
@@ -45,5 +45,5 @@ Route::post('/category/{id}', 'CategoriesController@update');
 Route::post('/category', 'CategoriesController@store');
 Route::delete('/category/{id}', 'CategoriesController@destroy');
 
-Route::get('/categoriesName','CategoriesController@categoriesName' );
+
 });

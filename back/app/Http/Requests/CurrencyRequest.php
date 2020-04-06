@@ -24,7 +24,7 @@ class CurrencyRequest extends FormRequest
     public function rules()
     {
         return [
-            'country' => 'unique:categories,name,NULL,id,users_id,' . $this->users_id,
+            'country' => 'required',
             'symbol' => 'required',
             'name' => 'required',
             'code' => 'required',

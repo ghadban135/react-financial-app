@@ -13,7 +13,7 @@ class TransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-        public function transactionPersantage()
+        public function transactionPercentage()
        {
         $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
@@ -57,35 +57,35 @@ class TransactionsController extends Controller
         ->where('type', 'income')
         ->with('category')
         ->get();
-        
+
         if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No Incomes found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transactions' => $transactions
         ], 200);
     }
         public function expenseIndex()
        {
-$userId = auth()->user()->id;
+        $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
         ->where('type', 'expense')
         ->with('category')
         ->get();
         if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No Expenses found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transactions' => $transactions
         ], 200);
     }
@@ -93,19 +93,19 @@ $userId = auth()->user()->id;
        {
                   $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
-        ->where('type', 'savingPlan')
+        ->where('type', 'saving expense')
         ->with('category')
         ->get();
 
         if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No Saving Plans found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'user' => $transactions
         ], 200);
     }
