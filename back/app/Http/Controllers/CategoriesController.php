@@ -2,14 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 class CategoriesController extends Controller
+
 {
+    public function categoriesName()
+    {
+        $userId = auth()->user()->id;
+        $result = User::where('id', $userId)
+        ->with('categories')
+        ->get();
+
+        return response()->json([
+            'success' => true,
+            'user' => $result,
+        ], 200);
+    }
      public function index()
     {
-         $userId = auth()->user()->id;
+        $userId = auth()->user()->id;
         $result = Category::where('users_id',$userId)->get();
 
         if(!$result){

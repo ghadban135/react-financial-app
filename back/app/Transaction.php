@@ -12,4 +12,8 @@ class Transaction extends Model
     protected $fillable = [
         'title', 'description','amount','categories_id','start_date','end_date','users_id','interval','type','currencies_id'
     ];
+            public function category()
+{
+return $this->hasOne(Category::class, 'id', 'categories_id');
+}
 }
