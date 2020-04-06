@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Transaction;
+use App\Category;
 use App\Http\Requests\TransactionRequest;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,30 @@ class TransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function incomeIndex()
+        public function transactionPersantage()
        {
-           $userId = auth()->user()->id;
-        $transactions = Transaction::where('type', 'income')->where('users_id', $userId)->get();
+        $userId = auth()->user()->id;
+        $transactions = Transaction::where('users_id', $userId)
+        ->with('category')
+        ->get();
+        $total = 0;
+        $result=[];
+        foreach ($transactions as $transaction)
+            {
+                $total+=$transaction->amount;
+            }
+            foreach ($transactions as $transaction)
+            {
+                $x=$transaction->amount;
+                $item = (($x/$total)*100);
+
+                    $result[]=[
+                        'title' => $transaction->title,
+                        'amount' => $transaction->amount,
+                        'percentage' => $item,
+                        'category' => $transaction->category->name
+                    ];
+            }
 
         if(!$transactions){
             return response()->json([
@@ -26,14 +47,36 @@ class TransactionsController extends Controller
 
         return response()->json([
             'status' => true,
-            'Incomes' => $transactions
+            'transactions' => $result
+        ], 200);
+    }
+    public function incomeIndex()
+       {
+        $userId = auth()->user()->id;
+        $transactions = Transaction::where('users_id', $userId)
+        ->where('type', 'income')
+        ->with('category')
+        ->get();
+        
+        if(!$transactions){
+            return response()->json([
+                'status' => false,
+                'message' => 'No Incomes found'
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => true,
+            'transactions' => $transactions
         ], 200);
     }
         public function expenseIndex()
        {
-                   $userId = auth()->user()->id;
-        $transactions = Transaction::where('type', 'expense')->where('users_id', $userId)->get();
-
+$userId = auth()->user()->id;
+        $transactions = Transaction::where('users_id', $userId)
+        ->where('type', 'expense')
+        ->with('category')
+        ->get();
         if(!$transactions){
             return response()->json([
                 'status' => false,
@@ -43,13 +86,16 @@ class TransactionsController extends Controller
 
         return response()->json([
             'status' => true,
-            'Expenses' => $transactions
+            'transactions' => $transactions
         ], 200);
     }
         public function savingPlanIndex()
        {
-                   $userId = auth()->user()->id;
-        $transactions = Transaction::where('type', 'savingPlan')->where('users_id', $userId)->get();
+                  $userId = auth()->user()->id;
+        $transactions = Transaction::where('users_id', $userId)
+        ->where('type', 'savingPlan')
+        ->with('category')
+        ->get();
 
         if(!$transactions){
             return response()->json([
@@ -60,7 +106,7 @@ class TransactionsController extends Controller
 
         return response()->json([
             'status' => true,
-            'Saving Plans' => $transactions
+            'user' => $transactions
         ], 200);
     }
     // public function pieChartTest()
