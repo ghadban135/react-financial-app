@@ -124,10 +124,12 @@ class Setting extends React.Component {
         label: "Name",
       },
       {
-        name: "Edit",
+        // name: "Edit",
+        name: "",
         options: {
           filter: false,
           sort: false,
+          viewColumns: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             // debugger;
@@ -189,10 +191,12 @@ class Setting extends React.Component {
         },
       },
       {
-        name: "Delete",
+        // name: "Delete",
+        name: "",
         options: {
           filter: false,
           sort: false,
+          viewColumns: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (

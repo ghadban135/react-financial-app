@@ -220,7 +220,7 @@ class TransactionsController extends Controller
             'user_id' => $userId,
             'interval' => $request->interval,
             'type' => $request->type,
-            'currencies_id' => $request->currencies_id,
+            'categories_id'=>$request->categories_id,
         ]);;
         $transactions->save();
             if(!$transactions){

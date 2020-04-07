@@ -93,7 +93,7 @@ class NewTable extends React.Component {
       searchPlaceholder: "Search ...",
       selectableRows: false,
       download: false,
-      print: false
+      print: false,
     };
     return (
       <MUIDataTable

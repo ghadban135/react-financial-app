@@ -35,9 +35,9 @@ class ExpenseForm extends React.Component {
     type: "expense",
     title: "",
     StartDate: "",
-    DueDate: "",
+    DueDate: null,
     amount: "",
-    description: "",
+    description: null,
   };
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -110,6 +110,7 @@ class ExpenseForm extends React.Component {
       selectedCategory: "",
     });
     if (result.success) {
+      this.props.getExpenses();
       this.closeModal();
       Swal.fire("Good job!", "Expense Added Successfully", "success");
     }
