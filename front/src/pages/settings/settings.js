@@ -224,7 +224,12 @@ class Setting extends React.Component {
                           },
                         }
                       ).then(async () => {
-                        this.getCategories();
+                        this.setState({
+                          data: this.state.data.filter(function (data) {
+                            return data.id !== tableMeta.rowData[0];
+                          }),
+                        });
+                        // this.getCategories();
                         Swal.fire(
                           "Deleted!",
                           "Your Category has been deleted.",

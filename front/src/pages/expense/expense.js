@@ -384,7 +384,7 @@ class expense extends React.Component {
                 // outline
                 color="danger"
                 size="sm"
-                onClick={async () => {
+                onClick={async (e) => {
                   Swal.fire({
                     title: "Are you sure?",
                     text: "You will not be able to recover this Category !",
@@ -404,7 +404,12 @@ class expense extends React.Component {
                           },
                         }
                       ).then(async () => {
-                        this.getExpenses();
+                        this.setState({
+                          data: this.state.data.filter(function (data) {
+                            return data.id !== tableMeta.rowData[0];
+                          }),
+                        });
+                        // this.getExpenses();
                         Swal.fire(
                           "Deleted!",
                           "Your Category has been deleted.",
