@@ -17,13 +17,13 @@ class CurrenciesController extends Controller
         $currencies = Currency::all();
         if(!$currencies){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No currencies found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'currencies' => $currencies
         ], 200);
     }
@@ -43,12 +43,12 @@ class CurrenciesController extends Controller
         $currencies->save();
                 if(!$currencies){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'currencies' => $currencies
         ], 201);
     }
@@ -64,12 +64,12 @@ class CurrenciesController extends Controller
         $currencies = Currency::where('id', $id)->first();
                 if(!$currencies){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No currencies found'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'currencies' => $currencies
         ], 200);
     }
@@ -90,12 +90,12 @@ class CurrenciesController extends Controller
         $currencies->save();
                 if(!$currencies){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'currencies' => $currencies
         ], 201);
     }
@@ -111,12 +111,12 @@ class CurrenciesController extends Controller
         $currencies = Currency::where('id', $id)->delete();
                        if($currencies == 0){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'deleted succefully'
         ], 204);
     }

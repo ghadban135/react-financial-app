@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use App\Transaction;
 use App\Category;
@@ -13,40 +12,55 @@ class TransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-        public function transactionPersantage()
+        public function transactionPercentage()
        {
         $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
         ->with('category')
         ->get();
         $total = 0;
+        $totalIncomes = 0;
+        $totalExpenses = 0;
         $result=[];
         foreach ($transactions as $transaction)
             {
+                if(date('yy-m-d',strtotime($transaction->start_date))<date('yy-m-d')
+                &&(date('yy-m-d',strtotime($transaction->end_date))>date('yy-m-d')
+                    ||$transaction->end_date==null))
                 $total+=$transaction->amount;
             }
             foreach ($transactions as $transaction)
             {
-                $x=$transaction->amount;
-                $item = (($x/$total)*100);
-
-                    $result[]=[
+               if(date('yy-m-d',strtotime($transaction->start_date))<date('yy-m-d')
+                &&(date('yy-m-d',strtotime($transaction->end_date))>date('yy-m-d')
+                    ||$transaction->end_date==null)){
+                        $x=$transaction->amount;
+                      $item = (($x/$total)*100);
+                       if($transaction->type=="income")
+                      $totalExpenses+=$x;
+                      else
+                      $totalIncomes+=$x;
+                      $result[]=[
                         'title' => $transaction->title,
                         'amount' => $transaction->amount,
                         'percentage' => $item,
                         'category' => $transaction->category->name
                     ];
+                    }
+                
             }
 
         if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No Incomes found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
+            'incomes'=> $totalIncomes,
+            'expenses'=>$totalExpenses,
             'transactions' => $result
         ], 200);
     }
@@ -60,13 +74,13 @@ class TransactionsController extends Controller
         
         if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No Incomes found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transactions' => $transactions
         ], 200);
     }
@@ -79,13 +93,13 @@ $userId = auth()->user()->id;
         ->get();
         if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No Expenses found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transactions' => $transactions
         ], 200);
     }
@@ -99,13 +113,13 @@ $userId = auth()->user()->id;
 
         if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No Saving Plans found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'user' => $transactions
         ], 200);
     }
@@ -114,7 +128,7 @@ $userId = auth()->user()->id;
     //     $transactions = Transaction::select('type', 'savingPlan')->first();
 
     //     return response()->json([
-    //         'status' => true,
+    //         'success' => true,
     //         'Saving Plans' => $transactions
     //     ], 200);
     // }
@@ -178,12 +192,12 @@ $userId = auth()->user()->id;
         $transactions = Transaction::where('id', $id)->first();
                 if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transaction' => $transactions
         ], 200);
     }
@@ -225,12 +239,12 @@ $userId = auth()->user()->id;
         $transactions->save();
             if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transactions' => $transactions
         ], 201);
     }
@@ -247,12 +261,12 @@ $userId = auth()->user()->id;
         $transactions = Transaction::where('id', $id)->delete();
                         if($transactions ==0){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'deleted succefully'
         ], 204);
     }
