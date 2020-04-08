@@ -34,7 +34,20 @@ class dashBoard extends React.Component {
         </div>
         <div>
           <PieChart
-            transaction={this.props.transaction}
+            transaction={[
+              {
+                title: "Incomes",
+                amount: "30.0",
+                percentage: 10,
+                category: "firstcategory",
+              },
+              {
+                title: "Expenses",
+                amount: "70.0",
+                percentage: 90,
+                category: "firstcategory",
+              },
+            ]}
             // endAngle="90"
             // startAngle="270"
             innerRadius="55%"

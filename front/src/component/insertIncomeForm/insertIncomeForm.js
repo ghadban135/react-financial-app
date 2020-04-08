@@ -35,14 +35,10 @@ class IncomeForm extends React.Component {
     type: "income",
     title: "",
     StartDate: "",
-    DueDate: "",
+    DueDate: null,
     amount: "",
-    description: "",
+    description: null,
   };
-  // handleChange = (selectedOption) => {
-  //   this.setState({ selectedOption });
-  //   console.log(`Option selected:`, selectedOption);
-  // };
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -115,6 +111,7 @@ class IncomeForm extends React.Component {
       selectedCategory: "",
     });
     if (result.success) {
+      this.props.getIncomes();
       this.closeModal();
       Swal.fire("Good job!", "Income Added Successfully", "success");
     }

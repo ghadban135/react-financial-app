@@ -124,10 +124,12 @@ class Setting extends React.Component {
         label: "Name",
       },
       {
-        name: "Edit",
+        // name: "Edit",
+        name: "",
         options: {
           filter: false,
           sort: false,
+          viewColumns: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             // debugger;
@@ -189,10 +191,12 @@ class Setting extends React.Component {
         },
       },
       {
-        name: "Delete",
+        // name: "Delete",
+        name: "",
         options: {
           filter: false,
           sort: false,
+          viewColumns: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
@@ -220,7 +224,15 @@ class Setting extends React.Component {
                           },
                         }
                       ).then(async () => {
-                        this.getCategories();
+                        /* i should take a response after delete and make if condition 
+                        to take this setState else i should pop up a message you can't 
+                        delete this category because you used in transaction */
+                        this.setState({
+                          data: this.state.data.filter(function (data) {
+                            return data.id !== tableMeta.rowData[0];
+                          }),
+                        });
+                        // this.getCategories();
                         Swal.fire(
                           "Deleted!",
                           "Your Category has been deleted.",

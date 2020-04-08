@@ -44,4 +44,6 @@ Route::get('/category/{id}', 'CategoriesController@show');
 Route::post('/category/{id}', 'CategoriesController@update');
 Route::post('/category', 'CategoriesController@store');
 Route::delete('/category/{id}', 'CategoriesController@destroy');
+
+
 });

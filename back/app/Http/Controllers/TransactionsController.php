@@ -22,10 +22,16 @@ class TransactionsController extends Controller
         $totalIncomes = 0;
         $totalExpenses = 0;
         $result=[];
+        // $test=abs(strtotime("2020-12-5"))
+        // -date(strtotime("2020-6-4"));
+        // $years = floor($test / (365*60*60*24));  
+        // $months = floor(($test - $years * 365*60*60*24) 
+        // / (30*60*60*24));
+
         foreach ($transactions as $transaction)
             {
-                if(date('yy-m-d',strtotime($transaction->start_date))<date('yy-m-d')
-                &&(date('yy-m-d',strtotime($transaction->end_date))>date('yy-m-d')
+                if(date('m',strtotime($transaction->start_date))<=date('m')
+                &&(date('m',strtotime($transaction->end_date))>=date('m')
                     ||$transaction->end_date==null))
                 $total+=$transaction->amount;
             }
@@ -37,18 +43,52 @@ class TransactionsController extends Controller
                         $x=$transaction->amount;
                       $item = (($x/$total)*100);
                        if($transaction->type=="income")
-                      $totalExpenses+=$x;
-                      else
                       $totalIncomes+=$x;
+                      else
+                      $totalExpenses+=$x;
                       $result[]=[
                         'title' => $transaction->title,
                         'amount' => $transaction->amount,
+                        'type' => $transaction->type,
                         'percentage' => $item,
                         'category' => $transaction->category->name
                     ];
-                    }
-                
+                }
             }
+                if($totalIncomes>$totalExpenses){
+                    $incomeResult=
+                        ['title' => 'free',
+                        'amount' => $totalIncomes-$totalExpenses,
+                        'percentage' => 100-$totalExpenses*100/$totalIncomes,]
+                    ;
+                    $expensResult=
+                        ['title' => 'Expenses',
+                        'amount' => $totalExpenses,
+                        'percentage' => $totalExpenses*100/$totalIncomes,]
+                    ;
+                 } else if($totalIncomes<$totalExpenses){
+                    $incomeResult=
+                        ['title' => 'Incomes',
+                        'amount' => $totalIncomes,
+                        'percentage' => $totalIncomes*100/$totalExpenses,]
+                    ;
+                    $expensResult=
+                        ['title' => 'cost overruns',
+                        'amount' => $totalExpenses-$totalIncomes,
+                        'percentage' => 100-$totalIncomes*100/$totalExpenses,];
+                }else{
+                    $incomeResult=
+                        ['title' => 'Incomes',
+                        'amount' => $totalIncomes,
+                        'percentage' => 50,]
+                    ;
+                    $expensResult=
+                        ['title' => 'Expenses',
+                        'amount' => $totalExpenses,
+                        'percentage' => 50,];
+                }
+
+            
 
         if(!$transactions){
             return response()->json([
@@ -59,8 +99,8 @@ class TransactionsController extends Controller
 
         return response()->json([
             'success' => true,
-            'incomes'=> $totalIncomes,
-            'expenses'=>$totalExpenses,
+            'incomes'=> $incomeResult,
+            'expenses'=>$expensResult,
             'transactions' => $result
         ], 200);
     }
@@ -71,7 +111,7 @@ class TransactionsController extends Controller
         ->where('type', 'income')
         ->with('category')
         ->get();
-        
+
         if(!$transactions){
             return response()->json([
                 'success' => false,
@@ -86,7 +126,7 @@ class TransactionsController extends Controller
     }
         public function expenseIndex()
        {
-$userId = auth()->user()->id;
+        $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
         ->where('type', 'expense')
         ->with('category')
@@ -107,7 +147,7 @@ $userId = auth()->user()->id;
        {
                   $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
-        ->where('type', 'savingPlan')
+        ->where('type', 'saving expense')
         ->with('category')
         ->get();
 
@@ -234,7 +274,7 @@ $userId = auth()->user()->id;
             'user_id' => $userId,
             'interval' => $request->interval,
             'type' => $request->type,
-            'currencies_id' => $request->currencies_id,
+            'categories_id'=>$request->categories_id,
         ]);;
         $transactions->save();
             if(!$transactions){

@@ -20,7 +20,10 @@ class PopupExpenseForm extends Component {
           add new expense
         </MDBBtn>
         <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
-          <ExpenseForm handleClose={this.toggle}></ExpenseForm>
+          <ExpenseForm
+            getExpenses={this.props.getExpenses}
+            handleClose={this.toggle}
+          ></ExpenseForm>
         </MDBModal>
       </MDBContainer>
     );
