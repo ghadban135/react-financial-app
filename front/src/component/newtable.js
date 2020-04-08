@@ -92,7 +92,7 @@ class NewTable extends React.Component {
       rowsPerPageOptions: [5, 10, 15, 20],
       searchPlaceholder: "Search ...",
       selectableRows: false,
-      download: false,
+      download: true,
       print: false,
     };
     return (

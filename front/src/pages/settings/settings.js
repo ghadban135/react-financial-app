@@ -224,6 +224,9 @@ class Setting extends React.Component {
                           },
                         }
                       ).then(async () => {
+                        /* i should take a response after delete and make if condition 
+                        to take this setState else i should pop up a message you can't 
+                        delete this category because you used in transaction */
                         this.setState({
                           data: this.state.data.filter(function (data) {
                             return data.id !== tableMeta.rowData[0];

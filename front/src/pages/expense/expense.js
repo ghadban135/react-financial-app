@@ -237,7 +237,7 @@ class expense extends React.Component {
                       editValueStartDate: tableMeta.rowData[6],
                       editValueEndDate: tableMeta.rowData[7],
                     });
-                    debugger;
+                    // debugger;
                     this.handleShow();
                   }}
                 >

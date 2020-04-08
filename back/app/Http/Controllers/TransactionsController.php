@@ -225,12 +225,12 @@ class TransactionsController extends Controller
         $transactions->save();
             if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transactions' => $transactions
         ], 201);
     }

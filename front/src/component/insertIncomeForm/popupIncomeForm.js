@@ -21,7 +21,10 @@ class PopupIncomeForm extends Component {
           add new income
         </MDBBtn>
         <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
-          <IncomeForm handleClose={this.toggle} />
+          <IncomeForm
+            getIncomes={this.props.getIncomes}
+            handleClose={this.toggle}
+          />
         </MDBModal>
       </MDBContainer>
     );
