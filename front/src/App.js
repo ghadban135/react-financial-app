@@ -23,19 +23,23 @@ class App extends React.Component {
       mostSpent: 500,
       overAllIncome: 1000,
       budget: 0,
-      transaction: [
-        { name: "Expense 1", cost: 50, type: "expense", percentage: 5 },
-        { name: "Expense 2", cost: 100, type: "expense", percentage: 10 },
-        { name: "Expense 3", cost: 125, type: "expense", percentage: 12.5 },
-        { name: "Expense 4", cost: 225, type: "expense", percentage: 22.5 },
-        { name: "Saving Plan1", cost: 500, type: "savingPlan", percentage: 50 },
-        { name: "Expense 1", cost: 50, type: "expense", percentage: 5 },
-        { name: "Expense 2", cost: 100, type: "expense", percentage: 10 },
-        { name: "Expense 3", cost: 125, type: "expense", percentage: 12.5 },
-        { name: "Expense 4", cost: 225, type: "expense", percentage: 22.5 },
-        { name: "Saving Plan1", cost: 500, type: "savingPlan", percentage: 50 },
-      ],
+      transaction: [],
     };
+  }
+  async componentDidMount() {
+    const response = await fetch(`http://localhost:8000/api/pieChart`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: "application/json",
+      },
+    });
+    const result = await response.json();
+    if (result.success) {
+      this.setState({
+        transaction: result.transactions,
+      });
+    }
   }
   render() {
     return (

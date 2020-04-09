@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use App\Transaction;
 use App\Category;
@@ -20,33 +19,88 @@ class TransactionsController extends Controller
         ->with('category')
         ->get();
         $total = 0;
+        $totalIncomes = 0;
+        $totalExpenses = 0;
         $result=[];
+        // $test=abs(strtotime("2020-12-5"))
+        // -date(strtotime("2020-6-4"));
+        // $years = floor($test / (365*60*60*24));  
+        // $months = floor(($test - $years * 365*60*60*24) 
+        // / (30*60*60*24));
+
         foreach ($transactions as $transaction)
             {
+                if(date('m',strtotime($transaction->start_date))<=date('m')
+                &&(date('m',strtotime($transaction->end_date))>=date('m')
+                    ||$transaction->end_date==null))
                 $total+=$transaction->amount;
             }
             foreach ($transactions as $transaction)
             {
-                $x=$transaction->amount;
-                $item = (($x/$total)*100);
-
-                    $result[]=[
+               if(date('yy-m-d',strtotime($transaction->start_date))<date('yy-m-d')
+                &&(date('yy-m-d',strtotime($transaction->end_date))>date('yy-m-d')
+                    ||$transaction->end_date==null)){
+                        $x=$transaction->amount;
+                      $item = (($x/$total)*100);
+                       if($transaction->type=="income")
+                      $totalIncomes+=$x;
+                      else
+                      $totalExpenses+=$x;
+                      $result[]=[
                         'title' => $transaction->title,
                         'amount' => $transaction->amount,
+                        'type' => $transaction->type,
                         'percentage' => $item,
                         'category' => $transaction->category->name
                     ];
+                }
             }
+                if($totalIncomes>$totalExpenses){
+                    $incomeResult=
+                        ['title' => 'free',
+                        'amount' => $totalIncomes-$totalExpenses,
+                        'percentage' => 100-$totalExpenses*100/$totalIncomes,]
+                    ;
+                    $expensResult=
+                        ['title' => 'Expenses',
+                        'amount' => $totalExpenses,
+                        'percentage' => $totalExpenses*100/$totalIncomes,]
+                    ;
+                 } else if($totalIncomes<$totalExpenses){
+                    $incomeResult=
+                        ['title' => 'Incomes',
+                        'amount' => $totalIncomes,
+                        'percentage' => $totalIncomes*100/$totalExpenses,]
+                    ;
+                    $expensResult=
+                        ['title' => 'cost overruns',
+                        'amount' => $totalExpenses-$totalIncomes,
+                        'percentage' => 100-$totalIncomes*100/$totalExpenses,];
+                }else{
+                    $incomeResult=
+                        ['title' => 'Incomes',
+                        'amount' => $totalIncomes,
+                        'percentage' => 50,]
+                    ;
+                    $expensResult=
+                        ['title' => 'Expenses',
+                        'amount' => $totalExpenses,
+                        'percentage' => 50,];
+                }
+
+            
 
         if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'No Incomes found'
             ], 500);
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
+            'incomes'=> $incomeResult,
+            'expenses'=>$expensResult,
             'transactions' => $result
         ], 200);
     }
@@ -114,7 +168,7 @@ class TransactionsController extends Controller
     //     $transactions = Transaction::select('type', 'savingPlan')->first();
 
     //     return response()->json([
-    //         'status' => true,
+    //         'success' => true,
     //         'Saving Plans' => $transactions
     //     ], 200);
     // }
@@ -178,12 +232,12 @@ class TransactionsController extends Controller
         $transactions = Transaction::where('id', $id)->first();
                 if(!$transactions){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'transaction' => $transactions
         ], 200);
     }
@@ -247,12 +301,12 @@ class TransactionsController extends Controller
         $transactions = Transaction::where('id', $id)->delete();
                         if($transactions ==0){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'something wrong'
             ], 500);
         }
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'deleted succefully'
         ], 204);
     }

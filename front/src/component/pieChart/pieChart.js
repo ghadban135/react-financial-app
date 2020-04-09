@@ -7,15 +7,16 @@ import {
   AccumulationDataLabel,
   PieSeries,
   AccumulationTooltip,
-  AccumulationLegend
+  AccumulationLegend,
 } from "@syncfusion/ej2-react-charts";
 
 export class PieChart extends React.Component {
   render() {
+    console.log(this.props.transaction);
     let data1 = this.props.transaction.map((item, index) => ({
-      categoryName: item.name,
+      categoryName: item.title,
       categoryValue: item.percentage,
-      labelText: item.name + ": " + item.cost + " $"
+      labelText: item.name + ": " + item.amount + " $",
     }));
     return (
       <div className="control-pane">
@@ -28,12 +29,12 @@ export class PieChart extends React.Component {
               position: "Bottom",
               visible: false, //if we want legend
               height: "40",
-              width: "300"
+              width: "300",
             }}
             tooltip={{
               enable: true,
               header: "Category",
-              format: "${point.x} : <b>${point.y}%</b>"
+              format: "${point.x} : <b>${point.y}%</b>",
             }}
           >
             <Inject
@@ -41,7 +42,7 @@ export class PieChart extends React.Component {
                 AccumulationDataLabel,
                 AccumulationTooltip,
                 PieSeries,
-                AccumulationLegend
+                AccumulationLegend,
               ]}
             />
             <AccumulationSeriesCollectionDirective>
@@ -57,7 +58,7 @@ export class PieChart extends React.Component {
                   visible: true,
                   position: "Outside",
                   connectorStyle: { length: "10%" },
-                  name: "labelText"
+                  name: "labelText",
                 }}
               ></AccumulationSeriesDirective>
             </AccumulationSeriesCollectionDirective>

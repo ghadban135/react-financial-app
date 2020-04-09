@@ -9,7 +9,6 @@ use App\Http\Requests\CategoryRequest;
 class CategoriesController extends Controller
 
 {
-
      public function index()
     {
         $userId = auth()->user()->id;
