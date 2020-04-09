@@ -385,11 +385,13 @@ class savingPlan extends React.Component {
     return (
       <>
         <SavingPlanForm getSavingPlan={() => this.getSavingPlan()} />
-        <NewTable
-          title="Saving Table"
-          data={this.state.data}
-          columns={columns}
-        />
+        <div style={{ height: "450px" }}>
+          <NewTable
+            title="Saving Table"
+            data={this.state.data}
+            columns={columns}
+          />
+        </div>
       </>
     );
   }

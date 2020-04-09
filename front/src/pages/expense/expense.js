@@ -441,11 +441,13 @@ class expense extends React.Component {
           <PopupExpenseForm getExpenses={() => this.getExpenses()} />
           <AddCategory />
         </div>
-        <NewTable
-          title="Expense Table"
-          data={this.state.data}
-          columns={columns}
-        />
+        <div style={{ height: "450px" }}>
+          <NewTable
+            title="Expense Table"
+            data={this.state.data}
+            columns={columns}
+          />
+        </div>
       </>
     );
   }

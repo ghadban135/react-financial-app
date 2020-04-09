@@ -438,11 +438,13 @@ class income extends React.Component {
           <PopupIncomeForm getIncomes={() => this.getIncomes()} />
           <AddCategory />
         </div>
-        <NewTable
-          title="Income Table"
-          data={this.state.data}
-          columns={columns}
-        />
+        <div style={{ height: "450px" }}>
+          <NewTable
+            title="Income Table"
+            data={this.state.data}
+            columns={columns}
+          />
+        </div>
       </>
     );
   }
