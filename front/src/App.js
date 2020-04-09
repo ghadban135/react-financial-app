@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
 import DashBoard from "./pages/dashboard/dashboard";
 import Income from "./pages/income/income";
 import Expense from "./pages/expense/expense";
@@ -38,6 +44,15 @@ class App extends React.Component {
         <BrowserRouter>
           <div>
             <Switch>
+              {/* 
+              let history = useHistory();
+              <button
+                onClick={() => history.push("/")
+                }
+              >
+                Sign out
+               </button> */}
+              {/* window.localStorage.removeItem('keyName'); */}
               {/* <Route
                 exact
                 path="/"
@@ -67,6 +82,9 @@ class App extends React.Component {
               <Route exact path="/expense" component={Expense} />
               <Route exact path="/savingPlan" component={SavingPlan} />
               <Route exact path="/settings" component={Setting} />
+              {/* <Route exact path="/logout">
+                {<Redirect to="/" />}
+              </Route> */}
             </Switch>
             <Footer />
           </div>

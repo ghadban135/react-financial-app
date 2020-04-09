@@ -12,6 +12,11 @@ function Header() {
         <Nav.Link href="expense">Expenses</Nav.Link>
         <Nav.Link href="savingPlan">Saving Plans</Nav.Link>
         <Nav.Link href="settings">Settings</Nav.Link>
+        {/* <Nav.Link href="logout">
+          <button onClick={() => localStorage.setItem("token", "")}>
+            Log out
+          </button>
+        </Nav.Link> */}
       </Nav>
     </Navbar>
   );

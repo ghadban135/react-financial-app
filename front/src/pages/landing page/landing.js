@@ -34,7 +34,7 @@ class LandingPage extends React.Component {
             textAlign: "center",
             fontWeight: "400",
             width: "80%",
-            paddingLeft: "14%"
+            paddingLeft: "14%",
           }}
         >
           Track By:
