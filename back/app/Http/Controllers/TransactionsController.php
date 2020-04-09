@@ -181,6 +181,7 @@ class TransactionsController extends Controller
     public function create(TransactionRequest $request)
     {
         $userId = auth()->user()->id;
+        $currencyId=auth()->user()->currencies_id;
         //$inputs = $request->all();
 
         $transactions = Transaction::create([
@@ -193,7 +194,7 @@ class TransactionsController extends Controller
             'users_id' => $userId,
             'interval' => $request->interval,
             'type' => $request->type,
-            'currencies_id' => $request->currencies_id
+            'currencies_id' => $currencyId
         ]);
         // $transaction = new Transaction();
         // $transaction->fill($inputs);
