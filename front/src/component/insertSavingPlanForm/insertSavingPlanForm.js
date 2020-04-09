@@ -75,6 +75,7 @@ class SavingPlanForm extends React.Component {
       selectedIntervalOption: "",
     });
     if (result.success) {
+      this.props.getSavingPlan();
       this.closeModal();
       Swal.fire("Good job!", "Saving Goal Added Successfully", "success");
     }

@@ -24,8 +24,8 @@ class TransactionsController extends Controller
         $result=[];
         // $test=abs(strtotime("2020-12-5"))
         // -date(strtotime("2020-6-4"));
-        // $years = floor($test / (365*60*60*24));  
-        // $months = floor(($test - $years * 365*60*60*24) 
+        // $years = floor($test / (365*60*60*24));
+        // $months = floor(($test - $years * 365*60*60*24)
         // / (30*60*60*24));
 
         foreach ($transactions as $transaction)
@@ -88,7 +88,7 @@ class TransactionsController extends Controller
                         'percentage' => 50,];
                 }
 
-            
+
 
         if(!$transactions){
             return response()->json([
@@ -148,7 +148,7 @@ class TransactionsController extends Controller
                   $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
         ->where('type', 'saving expense')
-        ->with('category')
+        // ->with('category')
         ->get();
 
         if(!$transactions){
@@ -160,7 +160,7 @@ class TransactionsController extends Controller
 
         return response()->json([
             'success' => true,
-            'user' => $transactions
+            'transactions' => $transactions
         ], 200);
     }
     // public function pieChartTest()
