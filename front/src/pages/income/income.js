@@ -4,6 +4,8 @@ import AddCategory from "../../component/addCategory/addCategory";
 import PopupIncomeForm from "../../component/insertIncomeForm/popupIncomeForm";
 import Swal from "sweetalert2";
 import Select from "react-select";
+import PieChart from "../../component/pieChart/pieChart";
+import BarChart from "../../component/barChart/barChart";
 import {
   MDBContainer,
   MDBRow,
@@ -34,6 +36,13 @@ class income extends React.Component {
       editValueEndDate: "",
       show: false,
       CategoryOptions: [],
+      selectedPieMonth: [{ value: 0, label: "All" }],
+      selectedPieYear: [
+        { label: new Date().getFullYear(), value: new Date().getFullYear() },
+      ],
+      selectedBarYear: [
+        { label: new Date().getFullYear(), value: new Date().getFullYear() },
+      ],
     };
   }
   getIndexOfCategory = () => {
@@ -168,6 +177,31 @@ class income extends React.Component {
       mm = "0" + mm;
     }
     let currentDate = yyyy + "-" + mm + "-" + dd;
+
+    const MonthOptions = [
+      { value: 0, label: "All" },
+      { value: 1, label: "Jan" },
+      { value: 2, label: "Feb" },
+      { value: 3, label: "Mar" },
+      { value: 4, label: "Apr" },
+      { value: 5, label: "May" },
+      { value: 6, label: "Jun" },
+      { value: 7, label: "Jul" },
+      { value: 8, label: "Aug" },
+      { value: 9, label: "Sep" },
+      { value: 10, label: "Oct" },
+      { value: 11, label: "Nov" },
+      { value: 12, label: "Dec" },
+    ];
+    const YearOptions = [
+      { value: 2018, label: 2018 },
+      { value: 2019, label: 2019 },
+      { value: 2020, label: 2020 },
+      { value: 2021, label: 2021 },
+      { value: 2022, label: 2022 },
+      { value: 2023, label: 2023 },
+    ];
+
     const columns = [
       {
         name: "id",
@@ -444,6 +478,82 @@ class income extends React.Component {
             data={this.state.data}
             columns={columns}
           />
+        </div>
+        <br />
+        <div style={{ width: "100%", textAlign: "center", fontWeight: "400" }}>
+          Expenses Breakdown <hr />
+        </div>
+        <div
+          className="chartContainer"
+          style={{
+            justifyContent: "space-around",
+          }}
+        >
+          <div style={{ display: "flex", marginRight: "55px" }}>
+            <div style={{ display: "flex", marginRight: "20px" }}>
+              <h5 style={{ marginTop: "5px" }}>Year:</h5>&nbsp;
+              <div style={{ width: "110px" }}>
+                <Select
+                  value={this.state.selectedPieYear}
+                  // defaultValue={{ label: 2020, value: 2020 }}
+                  //when i use defaultValue i shouldn't use Value
+                  onChange={(value) => {
+                    this.setState({
+                      selectedPieYear: {
+                        value: value.value,
+                        label: value.label,
+                      },
+                    });
+                  }}
+                  options={YearOptions}
+                  placeholder="Year..."
+                />
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <h5 style={{ marginTop: "5px" }}>Month:</h5>&nbsp;
+              <div style={{ width: "110px" }}>
+                <Select
+                  menuPlacement="auto"
+                  menuPosition="fixed"
+                  value={this.state.selectedPieMonth}
+                  // defaultValue={[{ value: 0, label: "All" }]}
+                  onChange={(value) => {
+                    this.setState({
+                      selectedPieMonth: {
+                        value: value.value,
+                        label: value.label,
+                      },
+                    });
+                  }}
+                  options={MonthOptions}
+                  placeholder="Month..."
+                />
+              </div>
+            </div>
+          </div>
+          <div style={{ marginRight: "145px", display: "flex" }}>
+            <h5 style={{ marginTop: "5px" }}>Year:</h5>&nbsp;
+            <div style={{ width: "110px" }}>
+              <Select
+                value={this.state.selectedBarYear}
+                onChange={(value) => {
+                  this.setState({
+                    selectedBarYear: {
+                      value: value.value,
+                      label: value.label,
+                    },
+                  });
+                }}
+                options={YearOptions}
+                placeholder="Year..."
+              />
+            </div>
+          </div>
+        </div>
+        <div className="chartContainer">
+          <PieChart transaction={this.props.transaction} />
+          <BarChart />
         </div>
       </>
     );

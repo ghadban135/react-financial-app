@@ -82,8 +82,20 @@ class App extends React.Component {
                   />
                 )}
               />
-              <Route exact path="/income" component={Income} />
-              <Route exact path="/expense" component={Expense} />
+              <Route
+                exact
+                path="/income"
+                component={() => (
+                  <Income transaction={this.state.transaction} />
+                )}
+              />
+              <Route
+                exact
+                path="/expense"
+                component={() => (
+                  <Expense transaction={this.state.transaction} />
+                )}
+              />
               <Route exact path="/savingPlan" component={SavingPlan} />
               <Route exact path="/settings" component={Setting} />
               {/* <Route exact path="/logout">
