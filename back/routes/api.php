@@ -32,6 +32,8 @@ Route::post('/transaction/{id}', 'TransactionsController@update');
 Route::delete('/transaction/{id}', 'TransactionsController@destroy');
 
 Route::get('/pieChart', 'TransactionsController@transactionPercentage');
+Route::get('/pieChart1', 'TransactionsController@transactionPercentageYear');
+Route::get('/barChart', 'TransactionsController@barchart');
 
 Route::get('/currencies', 'CurrenciesController@index');
 Route::get('/currency/{id}', 'CurrenciesController@show');

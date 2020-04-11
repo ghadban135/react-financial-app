@@ -22,24 +22,27 @@ class TransactionsController extends Controller
         $totalIncomes = 0;
         $totalExpenses = 0;
         $result=[];
-        // $test=abs(strtotime("2020-12-5"))
-        // -date(strtotime("2020-6-4"));
-        // $years = floor($test / (365*60*60*24));  
-        // $months = floor(($test - $years * 365*60*60*24) 
-        // / (30*60*60*24));
-
-        foreach ($transactions as $transaction)
-            {
-                if(date('m',strtotime($transaction->start_date))<=date('m')
-                &&(date('m',strtotime($transaction->end_date))>=date('m')
-                    ||$transaction->end_date==null))
+        $month = "2";
+        $year = "2020";
+        $myDate = date('Y-m',strtotime($year."-".$month."-1"));
+            foreach($transactions as $transaction){
+                $startDate=date('Y-m',strtotime($transaction->start_date));
+                if (!$transaction->end_date)
+                    $endDate = null;
+                    else
+                    $endDate=date('Y-m',strtotime($transaction->end_date));
+                if(($startDate<=$myDate)&&($endDate>=$myDate)
+                  ||($startDate==$myDate)&&($endDate==null))
                 $total+=$transaction->amount;
             }
-            foreach ($transactions as $transaction)
-            {
-               if(date('yy-m-d',strtotime($transaction->start_date))<date('yy-m-d')
-                &&(date('yy-m-d',strtotime($transaction->end_date))>date('yy-m-d')
-                    ||$transaction->end_date==null)){
+            foreach($transactions as $transaction){
+                $startDate=date('Y-m',strtotime($transaction->start_date));
+                if (!$transaction->end_date)
+                    $endDate = null;
+                    else
+                    $endDate=date('Y-m',strtotime($transaction->end_date));
+                if(($startDate<=$myDate)&&($endDate>=$myDate)
+                  ||($startDate==$myDate)&&($endDate==null)){
                         $x=$transaction->amount;
                       $item = (($x/$total)*100);
                        if($transaction->type=="income")
@@ -55,7 +58,7 @@ class TransactionsController extends Controller
                     ];
                 }
             }
-                if($totalIncomes>$totalExpenses){
+                if($totalIncomes>=$totalExpenses){
                     $incomeResult=
                         ['title' => 'free',
                         'amount' => $totalIncomes-$totalExpenses,
@@ -76,16 +79,6 @@ class TransactionsController extends Controller
                         ['title' => 'cost overruns',
                         'amount' => $totalExpenses-$totalIncomes,
                         'percentage' => 100-$totalIncomes*100/$totalExpenses,];
-                }else{
-                    $incomeResult=
-                        ['title' => 'Incomes',
-                        'amount' => $totalIncomes,
-                        'percentage' => 50,]
-                    ;
-                    $expensResult=
-                        ['title' => 'Expenses',
-                        'amount' => $totalExpenses,
-                        'percentage' => 50,];
                 }
 
             
@@ -104,6 +97,147 @@ class TransactionsController extends Controller
             'transactions' => $result
         ], 200);
     }
+    public function transactionPercentageYear()
+       {
+        $userId = auth()->user()->id;
+        $transactions = Transaction::where('users_id', $userId)
+        ->with('category')
+        ->get();
+        $total = 0;
+        $totalIncomes = 0;
+        $totalExpenses = 0;
+        $result=[];
+        $year = "2020";
+        $myDate = $year."-1-1";
+        $myDateLastMonth = $year."-12-31";
+        foreach ($transactions as $transaction)
+            {
+                if(date('yy',strtotime($transaction->start_date))
+                <=date('yy',strtotime($myDate))
+                &&(date('yy',strtotime($transaction->end_date))
+                >=date('yy',strtotime($myDate)))
+                  ||  ((date('yy',strtotime($transaction->start_date))
+                  ==date('yy',strtotime($myDate)))
+                    &&($transaction->end_date==null))){
+                    if(date('yy',strtotime($transaction->start_date))
+                    ==date('yy',strtotime($myDate)))
+                    $myStartDate = $transaction->start_date;
+                    else
+                    $myStartDate = $myDate;
+                    if(date('yy',strtotime($transaction->end_date))
+                    ==date('yy',strtotime($myDate)))
+                    $myEndDate = $transaction->end_date;
+                    else
+                    $myEndDate = $myDateLastMonth;
+                    $subDate=abs(strtotime($myEndDate)
+                    -strtotime($myStartDate));
+                    $years = floor($subDate / (365*60*60*24)); 
+                    $months = floor(($subDate - $years * 365*60*60*24) 
+                    / (30*60*60*24));
+                        $x=$transaction->amount;
+                        if(!($transaction->end_date)==null)
+                        $transaction->amount*=($months+$years*12);
+                       if($transaction->type=="income")
+                      $totalIncomes+=$transaction->amount;
+                      else
+                      $totalExpenses+=$transaction->amount;
+                    $total+=$transaction->amount;
+            }
+        }
+            foreach ($transactions as $transaction)
+            {
+               if(date('yy',strtotime($transaction->start_date))
+                <=date('yy',strtotime($myDate))
+                &&(date('yy',strtotime($transaction->end_date))
+                >=date('yy',strtotime($myDate)))
+                  ||  ((date('yy',strtotime($transaction->start_date))
+                  ==date('yy',strtotime($myDate)))
+                    &&($transaction->end_date==null))){
+
+                    $item = (($transaction->amount/$total)*100);
+                      $result[]=[
+                        'title' => $transaction->title,
+                        'amount' => $transaction->amount,
+                        'type' => $transaction->type,
+                        'percentage' => $item,
+                        'category' => $transaction->category->name
+                    ];
+                }
+            }
+                if($totalIncomes>=$totalExpenses){
+                    $incomeResult=
+                        ['title' => 'free',
+                        'amount' => $totalIncomes-$totalExpenses,
+                        'percentage' => 100-$totalExpenses*100/$totalIncomes,]
+                    ;
+                    $expensResult=
+                        ['title' => 'Expenses',
+                        'amount' => $totalExpenses,
+                        'percentage' => $totalExpenses*100/$totalIncomes,]
+                    ;
+                 } else if($totalIncomes<$totalExpenses){
+                    $incomeResult=
+                        ['title' => 'Incomes',
+                        'amount' => $totalIncomes,
+                        'percentage' => $totalIncomes*100/$totalExpenses,]
+                    ;
+                    $expensResult=
+                        ['title' => 'cost overruns',
+                        'amount' => $totalExpenses-$totalIncomes,
+                        'percentage' => 100-$totalIncomes*100/$totalExpenses,];
+                }
+
+            
+
+        if(!$transactions){
+            return response()->json([
+                'success' => false,
+                'message' => 'No Incomes found'
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'incomes'=> $incomeResult,
+            'expenses'=>$expensResult,
+            'transactions' => $result
+        ], 200);
+    }
+    public function barchart()
+       {
+        $userId = auth()->user()->id;
+        $transactions = Transaction::where('users_id', $userId)
+        ->get();
+        $year='2020';
+        $result=[];   
+        for($i=1;$i<=12;$i++)
+        {   
+            $countOfMonth=0;
+            $myDate = date('Y-m',strtotime($year.'-'.$i.'-1'));
+            foreach($transactions as $transaction){
+                $startDate=date('Y-m',strtotime($transaction->start_date));
+                if (!$transaction->end_date)
+                    $endDate = null;
+                    else
+                    $endDate=date('Y-m',strtotime($transaction->end_date));
+                if(($startDate<=$myDate)&&($endDate>=$myDate)
+                  ||($startDate==$myDate)&&($endDate==null)){
+                        $countOfMonth+=$transaction->amount;
+                    }}
+            $result[]=$countOfMonth;        
+            }
+                    if(!$transactions){
+            return response()->json([
+                'success' => false,
+                'message' => 'No Incomes found'
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'transactions' => $result
+        ], 200);
+       }
     public function incomeIndex()
        {
         $userId = auth()->user()->id;
