@@ -12,26 +12,18 @@ class dashBoard extends React.Component {
       <div className="dashboardContainer">
         <div className="boxContainer">
           <p>
-            Overall Income
-            <br />
-            {this.props.overAllIncome}
-          </p>
+            Overall Income <br /> {this.props.overAllIncome}{" "}
+          </p>{" "}
           <p>
-            overall Spent
-            <br />
-            {this.props.overAllSpent}
-          </p>
+            overall Spent <br /> {this.props.overAllSpent}{" "}
+          </p>{" "}
           <p>
-            Most Spent
-            <br />
-            {this.props.mostSpent}
-          </p>
+            Most Spent <br /> {this.props.mostSpent}{" "}
+          </p>{" "}
           <p>
-            Budget
-            <br />
-            {this.props.budget}
-          </p>
-        </div>
+            Budget <br /> {this.props.budget}{" "}
+          </p>{" "}
+        </div>{" "}
         <div>
           <PieChart
             transaction={[
@@ -53,14 +45,20 @@ class dashBoard extends React.Component {
             innerRadius="55%"
             title="Budget (Current Month)"
           />
-        </div>
-        <div style={{ width: "100%", textAlign: "center", fontWeight: "400" }}>
-          Breakdown (Current Year) <hr />
-        </div>
+        </div>{" "}
+        <div
+          style={{
+            width: "100%",
+            textAlign: "center",
+            fontWeight: "400",
+          }}
+        >
+          Breakdown(Current Year) <hr />
+        </div>{" "}
         <div className="chartContainer">
-          <PieChart transaction={this.props.transaction} title="Category" />
+          <PieChart transaction={this.props.transactionY} title="Category" />
           <BarChart />
-        </div>
+        </div>{" "}
       </div>
     );
   }

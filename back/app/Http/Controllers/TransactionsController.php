@@ -22,8 +22,8 @@ class TransactionsController extends Controller
         $totalIncomes = 0;
         $totalExpenses = 0;
         $result=[];
-        $month = "2";
-        $year = "2020";
+        $month = $request->month;
+        $year = $request->year;
         $myDate = date('Y-m',strtotime($year."-".$month."-1"));
             foreach($transactions as $transaction){
                 $startDate=date('Y-m',strtotime($transaction->start_date));
@@ -107,7 +107,7 @@ class TransactionsController extends Controller
         $totalIncomes = 0;
         $totalExpenses = 0;
         $result=[];
-        $year = "2020";
+        $year = $request->year;
         $myDate = $year."-1-1";
         $myDateLastMonth = $year."-12-31";
         foreach ($transactions as $transaction)
@@ -187,7 +187,7 @@ class TransactionsController extends Controller
                         'percentage' => 100-$totalIncomes*100/$totalExpenses,];
                 }
 
-            
+
 
         if(!$transactions){
             return response()->json([
@@ -208,11 +208,12 @@ class TransactionsController extends Controller
         $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
         ->get();
-        $year='2020';
+        $year=$request->year;
         $result=[];   
         for($i=1;$i<=12;$i++)
         {   
             $countOfMonth=0;
+            
             $myDate = date('Y-m',strtotime($year.'-'.$i.'-1'));
             foreach($transactions as $transaction){
                 $startDate=date('Y-m',strtotime($transaction->start_date));
@@ -282,7 +283,7 @@ class TransactionsController extends Controller
                   $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
         ->where('type', 'saving expense')
-        ->with('category')
+        // ->with('category')
         ->get();
 
         if(!$transactions){
@@ -294,7 +295,7 @@ class TransactionsController extends Controller
 
         return response()->json([
             'success' => true,
-            'user' => $transactions
+            'transactions' => $transactions
         ], 200);
     }
     // public function pieChartTest()
@@ -315,6 +316,7 @@ class TransactionsController extends Controller
     public function create(TransactionRequest $request)
     {
         $userId = auth()->user()->id;
+        $currencyId=auth()->user()->currencies_id;
         //$inputs = $request->all();
 
         $transactions = Transaction::create([
@@ -327,7 +329,7 @@ class TransactionsController extends Controller
             'users_id' => $userId,
             'interval' => $request->interval,
             'type' => $request->type,
-            'currencies_id' => $request->currencies_id
+            'currencies_id' => $currencyId
         ]);
         // $transaction = new Transaction();
         // $transaction->fill($inputs);

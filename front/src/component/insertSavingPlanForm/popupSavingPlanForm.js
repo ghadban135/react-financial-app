@@ -29,7 +29,10 @@ class PopupSavingPlanForm extends Component {
           add new saving Plan
         </MDBBtn>
         <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
-          <SavingPlanForm handleClose={this.toggle} />
+          <SavingPlanForm
+            getSavingPlan={this.props.getSavingPlan}
+            handleClose={this.toggle}
+          />
         </MDBModal>
       </MDBContainer>
     );

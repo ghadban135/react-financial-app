@@ -303,6 +303,7 @@ class Setting extends React.Component {
           <div
             style={{
               margin: "30px 0",
+              height: "450px",
             }}
           >
             <NewTable

@@ -91,9 +91,7 @@ class IncomeForm extends React.Component {
     body.append("description", this.state.description);
     body.append("type", this.state.type);
     body.append("categories_id", this.state.selectedCategory.value);
-    body.append("currencies_id", 1);
     // debugger;
-    //we need to fix currencies like categories or get currency from user
     const response = await fetch(`http://localhost:8000/api/transaction`, {
       method: "POST",
       body,
