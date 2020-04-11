@@ -162,6 +162,13 @@ class expense extends React.Component {
     }
   };
 
+  PieFilter = async (e) => {
+    e.preventDefault();
+  };
+  BarFilter = async (e) => {
+    e.preventDefault();
+  };
+
   async componentDidMount() {
     this.getExpenses();
     this.getCategories();
@@ -194,12 +201,12 @@ class expense extends React.Component {
       { value: 12, label: "Dec" },
     ];
     const YearOptions = [
-      { value: 2018, label: 2018 },
       { value: 2019, label: 2019 },
       { value: 2020, label: 2020 },
       { value: 2021, label: 2021 },
       { value: 2022, label: 2022 },
       { value: 2023, label: 2023 },
+      { value: 2024, label: 2024 },
     ];
 
     const columns = [
@@ -489,7 +496,7 @@ class expense extends React.Component {
           className="chartContainer"
           style={{ justifyContent: "space-around" }}
         >
-          <div style={{ display: "flex", marginRight: "55px" }}>
+          <div style={{ display: "flex", marginRight: "110px" }}>
             <div style={{ display: "flex", marginRight: "20px" }}>
               <h5 style={{ marginTop: "5px" }}>Year:</h5>&nbsp;
               <div style={{ width: "110px" }}>
@@ -510,7 +517,7 @@ class expense extends React.Component {
                 />
               </div>
             </div>
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", marginRight: "10px" }}>
               <h5 style={{ marginTop: "5px" }}>Month:</h5>&nbsp;
               <div style={{ width: "110px" }}>
                 <Select
@@ -531,10 +538,19 @@ class expense extends React.Component {
                 />
               </div>
             </div>
+            <MDBBtn
+              style={{ top: "-5px", padding: "8px 25px" }}
+              outline
+              size="sm"
+              color="info"
+              onClick={this.PieFilter}
+            >
+              Filter
+            </MDBBtn>
           </div>
-          <div style={{ marginRight: "145px", display: "flex" }}>
+          <div style={{ marginRight: "150px", display: "flex" }}>
             <h5 style={{ marginTop: "5px" }}>Year:</h5>&nbsp;
-            <div style={{ width: "110px" }}>
+            <div style={{ width: "110px", marginRight: "10px" }}>
               <Select
                 value={this.state.selectedBarYear}
                 onChange={(value) => {
@@ -549,6 +565,15 @@ class expense extends React.Component {
                 placeholder="Year..."
               />
             </div>
+            <MDBBtn
+              style={{ top: "-5px", padding: "8px 25px" }}
+              outline
+              size="sm"
+              color="info"
+              onClick={this.BarFilter}
+            >
+              Filter
+            </MDBBtn>
           </div>
         </div>
         <div className="chartContainer">
