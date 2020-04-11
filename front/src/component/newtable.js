@@ -86,7 +86,8 @@ class NewTable extends React.Component {
 
     const options = {
       filterType: "dropdown",
-      responsive: "stacked",
+      // responsive: "stacked",
+      responsive: "scroll",
       pagination: true,
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 15, 20],

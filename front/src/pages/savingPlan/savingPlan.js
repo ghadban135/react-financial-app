@@ -3,6 +3,7 @@ import NewTable from "../../component/newtable";
 import SavingPlanForm from "../../component/insertSavingPlanForm/popupSavingPlanForm";
 import Swal from "sweetalert2";
 import Select from "react-select";
+import { Line } from "rc-progress";
 import {
   MDBContainer,
   MDBRow,
@@ -171,6 +172,26 @@ class savingPlan extends React.Component {
       {
         name: "end_date",
         label: "End Date",
+      },
+      {
+        name: "progress",
+        label: "Progress",
+        options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            let per =
+              ((Date.parse(currentDate) - Date.parse(tableMeta.rowData[5])) /
+                (Date.parse(tableMeta.rowData[6]) -
+                  Date.parse(tableMeta.rowData[5]))) *
+              100;
+            return (
+              <Line
+                strokeWidth="5"
+                percent={per < 0 ? 0 : per > 100 ? 100 : per}
+                strokeColor={per >= 100 ? "#85D262" : "#3FC7FA"}
+              />
+            );
+          },
+        },
       },
       {
         // name: "Edit",
