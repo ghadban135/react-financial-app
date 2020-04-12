@@ -13,11 +13,27 @@ import {
 export class PieChart extends React.Component {
   render() {
     console.log(this.props.transaction);
+    // debugger;
     let data1 = this.props.transaction.map((item, index) => ({
       categoryName: item.title,
-      categoryValue: item.percentage,
-      labelText: item.name + ": " + item.amount + " $",
+      categoryValue: item.amount,
+      labelText: item.title + ": " + item.amount + " $",
     }));
+    console.log("test");
+
+    // let data1 = [
+    //   {
+    //     categoryName: "test1",
+    //     categoryValue: "350.0",
+    //     labelText: "test1: 350.0 $",
+    //   },
+    //   {
+    //     categoryName: "ssjj",
+    //     categoryValue: "78.0",
+    //     labelText: " $",
+    //   },
+    // ];
+    console.log(data1);
     return (
       <div className="control-pane">
         <div className="control-section">

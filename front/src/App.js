@@ -27,43 +27,43 @@ class App extends React.Component {
       transactionM: [],
     };
   }
-  async componentDidMount() {
-    var d = new Date();
-    var y = d.getFullYear();
-    var m = d.getMonth();
-    const response = await fetch(
-      `http://localhost:8000/api/pieChartMonth?month=${m}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          Accept: "application/json",
-        },
-      }
-    );
-    const result = await response.json();
-    if (result.success) {
-      this.setState({
-        transactionMonth: result.transactions,
-      });
-    }
-    const response1 = await fetch(
-      `http://localhost:8000/api/pieChartYear?year=${y}&month=${m}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          Accept: "application/json",
-        },
-      }
-    );
-    const result1 = await response1.json();
-    if (result1.success) {
-      this.setState({
-        transactionYear: result1.transactions,
-      });
-    }
-  }
+  // async componentDidMount() {
+  //   var d = new Date();
+  //   var y = d.getFullYear();
+  //   var m = d.getMonth();
+  //   const response = await fetch(
+  //     `http://localhost:8000/api/pieChartMonth?year=${y}&month=${m}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.token}`,
+  //         Accept: "application/json",
+  //       },
+  //     }
+  //   );
+  //   const result = await response.json();
+  //   if (result.success) {
+  //     this.setState({
+  //       transactionMonth: result.transactions,
+  //     });
+  //   }
+  //   const response1 = await fetch(
+  //     `http://localhost:8000/api/pieChartYear?year=${y}&month=${m}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.token}`,
+  //         Accept: "application/json",
+  //       },
+  //     }
+  //   );
+  //   const result1 = await response1.json();
+  //   if (result1.success) {
+  //     this.setState({
+  //       transactionYear: result1.transactions,
+  //     });
+  //   }
+  // }
   render() {
     return (
       <div className="App">
@@ -111,12 +111,10 @@ class App extends React.Component {
                 exact
                 path="/income"
                 component={() => (
-                  <Income transactionM={this.state.transactionM}
-                  transactionY = {
-                    this.state.transactionY
-                  }
+                  <Income
+                    transactionM={this.state.transactionM}
+                    transactionY={this.state.transactionY}
                   />
-                  
                 )}
               />{" "}
               <Route

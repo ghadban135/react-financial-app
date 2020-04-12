@@ -12,7 +12,7 @@ class TransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-        public function transactionPercentage()
+        public function transactionPercentage(Request $request)
        {
         $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
@@ -81,7 +81,7 @@ class TransactionsController extends Controller
                         'percentage' => 100-$totalIncomes*100/$totalExpenses,];
                 }
 
-            
+
 
         if(!$transactions){
             return response()->json([
@@ -97,7 +97,7 @@ class TransactionsController extends Controller
             'transactions' => $result
         ], 200);
     }
-    public function transactionPercentageYear()
+    public function transactionPercentageYear(Request $request)
        {
         $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
@@ -131,8 +131,8 @@ class TransactionsController extends Controller
                     $myEndDate = $myDateLastMonth;
                     $subDate=abs(strtotime($myEndDate)
                     -strtotime($myStartDate));
-                    $years = floor($subDate / (365*60*60*24)); 
-                    $months = floor(($subDate - $years * 365*60*60*24) 
+                    $years = floor($subDate / (365*60*60*24));
+                    $months = floor(($subDate - $years * 365*60*60*24)
                     / (30*60*60*24));
                         $x=$transaction->amount;
                         if(!($transaction->end_date)==null)
@@ -203,17 +203,17 @@ class TransactionsController extends Controller
             'transactions' => $result
         ], 200);
     }
-    public function barchart()
+    public function barchart(Request $request)
        {
         $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
         ->get();
         $year=$request->year;
-        $result=[];   
+        $result=[];
         for($i=1;$i<=12;$i++)
-        {   
+        {
             $countOfMonth=0;
-            
+
             $myDate = date('Y-m',strtotime($year.'-'.$i.'-1'));
             foreach($transactions as $transaction){
                 $startDate=date('Y-m',strtotime($transaction->start_date));
@@ -225,7 +225,7 @@ class TransactionsController extends Controller
                   ||($startDate==$myDate)&&($endDate==null)){
                         $countOfMonth+=$transaction->amount;
                     }}
-            $result[]=$countOfMonth;        
+            $result[]=$countOfMonth;
             }
                     if(!$transactions){
             return response()->json([
