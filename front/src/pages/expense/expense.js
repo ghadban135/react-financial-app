@@ -20,6 +20,8 @@ import {
   MDBModalFooter,
   MDBModalHeader,
 } from "mdbreact";
+import PieChart22 from "../../component/pieChart/pieChart22";
+import BarChart22 from "../../component/barChart/barChart22";
 
 class expense extends React.Component {
   constructor(props) {
@@ -36,13 +38,14 @@ class expense extends React.Component {
       editValueEndDate: "",
       show: false,
       CategoryOptions: [],
-      selectedPieMonth: [{ value: 0, label: "All" }],
-      selectedPieYear: [
-        { label: new Date().getFullYear(), value: new Date().getFullYear() },
-      ],
-      selectedBarYear: [
-        { label: new Date().getFullYear(), value: new Date().getFullYear() },
-      ],
+      selectedPieMonth: { value: 1, label: "Jan" },
+      selectedPieYear: { value: 2020, label: 2020 },
+      // selectedPieMonth: [],
+      // selectedPieYear:
+      //   { label: new Date().getFullYear(), value: new Date().getFullYear() },
+      selectedBarYear: { value: 2020, label: 2020 },
+      pieValue: [],
+      barValue: [],
     };
   }
   getIndexOfCategory = () => {
@@ -164,14 +167,109 @@ class expense extends React.Component {
 
   PieFilter = async (e) => {
     e.preventDefault();
+    const response = await fetch(
+      `http://localhost:8000/api/pieChartMonth?year=${this.state.selectedPieYear.value}&month=${this.state.selectedPieMonth.value}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    // debugger;
+    const result = await response.json();
+    if (result.success) {
+      let incomeValue = result.transactions
+        .filter((items) => {
+          return items.type !== "income";
+        })
+        .map((item, index) => {
+          const currentTransactions = {
+            title: item.title,
+            amount: item.amount,
+            percentage: item.percentage,
+          };
+          return currentTransactions;
+        });
+      this.setState({
+        pieValue: incomeValue,
+      });
+    }
   };
   BarFilter = async (e) => {
     e.preventDefault();
+    const response = await fetch(
+      `http://localhost:8000/api/barChartExpense?year=${this.state.selectedBarYear.value}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+
+    const result = await response.json();
+    if (result.success) {
+      let incomeValue = result.transactions;
+      this.setState({
+        barValue: incomeValue,
+      });
+    }
+    // debugger;
   };
 
   async componentDidMount() {
     this.getExpenses();
     this.getCategories();
+    const response = await fetch(
+      `http://localhost:8000/api/barChartExpense?year=${2020}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+    if (result.success) {
+      let incomeValue = result.transactions;
+      this.setState({
+        barValue: incomeValue,
+      });
+    }
+    //bar
+    //pie
+    const response1 = await fetch(
+      `http://localhost:8000/api/pieChartMonth?year=${2020}&month=${1}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    const result1 = await response1.json();
+    if (result1.success) {
+      let incomeValue = result1.transactions
+        .filter((items) => {
+          return items.type !== "income";
+        })
+        .map((item, index) => {
+          const currentTransactions = {
+            title: item.title,
+            amount: item.amount,
+            percentage: item.percentage,
+          };
+          return currentTransactions;
+        });
+      this.setState({
+        pieValue: incomeValue,
+      });
+    }
   }
   render() {
     let yyyy = new Date().getFullYear();
@@ -186,7 +284,7 @@ class expense extends React.Component {
     let currentDate = yyyy + "-" + mm + "-" + dd;
 
     const MonthOptions = [
-      { value: 0, label: "All" },
+      // { value: 0, label: "All" },
       { value: 1, label: "Jan" },
       { value: 2, label: "Feb" },
       { value: 3, label: "Mar" },
@@ -577,8 +675,16 @@ class expense extends React.Component {
           </div>
         </div>
         <div className="chartContainer">
-          <PieChart transaction={this.props.transaction} />
-          <BarChart />
+          {/* <PieChart transaction={this.props.transaction} /> */}
+          {/* <BarChart /> */}
+        </div>
+        <div className="chartContainer">
+          <PieChart22 transaction={this.state.pieValue} />
+          <BarChart22
+            side="Expense"
+            title="Expense per year including saving plans"
+            transaction={this.state.barValue}
+          />
         </div>
       </>
     );

@@ -7,10 +7,13 @@ import {
   Legend,
   Category,
   StackingColumnSeries,
-  Tooltip
+  Tooltip,
 } from "@syncfusion/ej2-react-charts";
 // import { SampleBase } from "../common/sample-base";
 import { Browser } from "@syncfusion/ej2-base";
+// console.log(data0);
+// debugger;
+// let data0 = this.props.transaction;
 let data1 = [
   { x: "Jan", y: 111.1 },
   { x: "Feb", y: 127.3 },
@@ -23,7 +26,7 @@ let data1 = [
   { x: "Sep", y: 111.1 },
   { x: "Oct", y: 127.3 },
   { x: "Nov", y: 143.4 },
-  { x: "Dec", y: 159.9 }
+  { x: "Dec", y: 159.9 },
 ];
 let data2 = [
   { x: "Jan", y: 76.9 },
@@ -37,7 +40,7 @@ let data2 = [
   { x: "Sep", y: 111.1 },
   { x: "Oct", y: 127.3 },
   { x: "Nov", y: 143.4 },
-  { x: "Dec", y: 159.9 }
+  { x: "Dec", y: 159.9 },
 ];
 let data3 = [
   { x: "Jan", y: 66.1 },
@@ -51,7 +54,7 @@ let data3 = [
   { x: "Sep", y: 111.1 },
   { x: "Oct", y: 127.3 },
   { x: "Nov", y: 143.4 },
-  { x: "Dec", y: 159.9 }
+  { x: "Dec", y: 159.9 },
 ];
 let data4 = [
   { x: "Jan", y: 34.1 },
@@ -65,7 +68,7 @@ let data4 = [
   { x: "Sep", y: 111.1 },
   { x: "Oct", y: 127.3 },
   { x: "Nov", y: 143.4 },
-  { x: "Dec", y: 159.9 }
+  { x: "Dec", y: 159.9 },
 ];
 
 const SAMPLE_CSS = `
@@ -89,7 +92,7 @@ export class BarChart extends React.Component {
               interval: 1,
               lineStyle: { width: 0 },
               labelIntersectAction: "Rotate45",
-              valueType: "Category"
+              valueType: "Category",
             }}
             primaryYAxis={{
               title: "Amount",
@@ -101,7 +104,7 @@ export class BarChart extends React.Component {
               majorGridLines: { width: 1 },
               minorGridLines: { width: 1 },
               minorTickLines: { width: 0 },
-              labelFormat: "{value}B"
+              labelFormat: "{value}B",
             }}
             width={Browser.isDevice ? "100%" : "60%"}
             chartArea={{ border: { width: 0 } }}
@@ -121,7 +124,7 @@ export class BarChart extends React.Component {
                 name="UK"
                 type="StackingColumn"
               ></SeriesDirective>
-              <SeriesDirective
+              {/* <SeriesDirective
                 dataSource={data2}
                 xName="x"
                 yName="y"
@@ -141,7 +144,7 @@ export class BarChart extends React.Component {
                 yName="y"
                 name="Italy"
                 type="StackingColumn"
-              ></SeriesDirective>
+              ></SeriesDirective> */}
             </SeriesCollectionDirective>
           </ChartComponent>
         </div>

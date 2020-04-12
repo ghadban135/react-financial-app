@@ -71,7 +71,6 @@ class App extends React.Component {
         <BrowserRouter>
           <div>
             <Switch>
-              {" "}
               {/* 
                                 let history = useHistory();
                                 <button
@@ -79,8 +78,8 @@ class App extends React.Component {
                                   }
                                 >
                                   Sign out
-                                 </button> */}{" "}
-              {/* window.localStorage.removeItem('keyName'); */}{" "}
+                                 </button> */}
+              {/* window.localStorage.removeItem('keyName'); */}
               {/* <Route
                                   exact
                                   path="/"
@@ -91,8 +90,8 @@ class App extends React.Component {
                                       <Redirect to="/" />
                                     )
                                   }
-                                /> */}{" "}
-              <Route exact path="/" component={LandingPage} />{" "}
+                                /> */}
+              <Route exact path="/" component={LandingPage} />
               <Route
                 exact
                 path="/dashboard"
@@ -106,33 +105,18 @@ class App extends React.Component {
                     mostSpent={this.state.mostSpent}
                   />
                 )}
-              />{" "}
-              <Route
-                exact
-                path="/income"
-                component={() => (
-                  <Income
-                    transactionM={this.state.transactionM}
-                    transactionY={this.state.transactionY}
-                  />
-                )}
-              />{" "}
-              <Route
-                exact
-                path="/expense"
-                component={() => (
-                  <Expense transaction={this.state.transaction} />
-                )}
-              />{" "}
-              <Route exact path="/savingPlan" component={SavingPlan} />{" "}
-              <Route exact path="/settings" component={Setting} />{" "}
+              />
+              <Route exact path="/income" component={Income} />
+              <Route exact path="/expense" component={Expense} />
+              <Route exact path="/savingPlan" component={SavingPlan} />
+              <Route exact path="/settings" component={Setting} />
               {/* <Route exact path="/logout">
                                 {<Redirect to="/" />}
-                              </Route> */}{" "}
-            </Switch>{" "}
+                              </Route> */}
+            </Switch>
             <Footer />
-          </div>{" "}
-        </BrowserRouter>{" "}
+          </div>
+        </BrowserRouter>
       </div>
     );
   }

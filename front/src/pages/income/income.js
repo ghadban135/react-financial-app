@@ -20,6 +20,8 @@ import {
   MDBModalFooter,
   MDBModalHeader,
 } from "mdbreact";
+import BarChart22 from "../../component/barChart/barChart22";
+import PieChart22 from "../../component/pieChart/pieChart22";
 
 class income extends React.Component {
   constructor(props) {
@@ -36,16 +38,14 @@ class income extends React.Component {
       editValueEndDate: "",
       show: false,
       CategoryOptions: [],
-      // selectedPieMonth: [{ value: 2, label: "Feb" }],
-      selectedPieMonth: [],
-      selectedPieYear: [],
-      // selectedPieYear: [
+      selectedPieMonth: { value: 1, label: "Jan" },
+      selectedPieYear: { value: 2020, label: 2020 },
+      // selectedPieMonth: [],
+      // selectedPieYear:
       //   { label: new Date().getFullYear(), value: new Date().getFullYear() },
-      // ],
-      selectedBarYear: [
-        { label: new Date().getFullYear(), value: new Date().getFullYear() },
-      ],
+      selectedBarYear: { value: 2020, label: 2020 },
       pieValue: [],
+      barValue: [],
     };
   }
   getIndexOfCategory = () => {
@@ -165,38 +165,7 @@ class income extends React.Component {
     }
   };
   PieFilter = async (e) => {
-    // e.preventDefault();
-    // debugger;
-    // if (this.state.selectedPieMonth.value == 0) {
-    //   const response1 = await fetch(
-    //     `http://localhost:8000/api/pieChartYear?year=${this.state.selectedPieYear[0].value}`,
-    //     {
-    //       method: "GET",
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.token}`,
-    //         Accept: "application/json",
-    //       },
-    //     }
-    //   );
-    //   const result1 = await response1.json();
-    //   if (result1.success) {
-    //     let incomeValue = result1.transactions
-    //       .filter((items) => {
-    //         return items.type == "income";
-    //       })
-    //       .map((item, index) => {
-    //         const currentTransactions = {
-    //           title: item.title,
-    //           amount: item.amount,
-    //           percentage: item.percentage,
-    //         };
-    //         return currentTransactions;
-    //       });
-    //     this.setState({
-    //       pieValue: incomeValue,
-    //     });
-    //   }
-    // } else {
+    e.preventDefault();
     const response = await fetch(
       `http://localhost:8000/api/pieChartMonth?year=${this.state.selectedPieYear.value}&month=${this.state.selectedPieMonth.value}`,
       {
@@ -207,11 +176,12 @@ class income extends React.Component {
         },
       }
     );
+    // debugger;
     const result = await response.json();
     if (result.success) {
       let incomeValue = result.transactions
         .filter((items) => {
-          return items.type == "income";
+          return items.type === "income";
         })
         .map((item, index) => {
           const currentTransactions = {
@@ -225,15 +195,80 @@ class income extends React.Component {
         pieValue: incomeValue,
       });
     }
-    // }
   };
   BarFilter = async (e) => {
     e.preventDefault();
+    const response = await fetch(
+      `http://localhost:8000/api/barChartIncome?year=${this.state.selectedBarYear.value}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+
+    const result = await response.json();
+    if (result.success) {
+      let incomeValue = result.transactions;
+      this.setState({
+        barValue: incomeValue,
+      });
+    }
+    // debugger;
   };
 
   async componentDidMount() {
     this.getIncomes();
     this.getCategories();
+    const response = await fetch(
+      `http://localhost:8000/api/barChartIncome?year=${2020}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+    if (result.success) {
+      let incomeValue = result.transactions;
+      this.setState({
+        barValue: incomeValue,
+      });
+    }
+    //bar
+    //pie
+    const response1 = await fetch(
+      `http://localhost:8000/api/pieChartMonth?year=${2020}&month=${1}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    const result1 = await response1.json();
+    if (result1.success) {
+      let incomeValue = result1.transactions
+        .filter((items) => {
+          return items.type === "income";
+        })
+        .map((item, index) => {
+          const currentTransactions = {
+            title: item.title,
+            amount: item.amount,
+            percentage: item.percentage,
+          };
+          return currentTransactions;
+        });
+      this.setState({
+        pieValue: incomeValue,
+      });
+    }
   }
 
   render() {
@@ -643,8 +678,16 @@ class income extends React.Component {
           </div>
         </div>
         <div className="chartContainer">
-          <PieChart transaction={this.state.pieValue} />
-          <BarChart />
+          {/* <PieChart transaction={this.state.pieValue} />
+          <BarChart transaction={this.state.barValue} /> */}
+        </div>
+        <div className="chartContainer">
+          <PieChart22 transaction={this.state.pieValue} />
+          <BarChart22
+            side="Income"
+            title="Incomes per year"
+            transaction={this.state.barValue}
+          />
         </div>
       </>
     );

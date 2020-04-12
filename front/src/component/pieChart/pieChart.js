@@ -11,29 +11,60 @@ import {
 } from "@syncfusion/ej2-react-charts";
 
 export class PieChart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { data3: [] };
+  }
+  // async componentWillReceiveProps() {
+  //   // async componentWillUpdate() {
+  //   // async componentWillMount() {
+  //   //  async componentDidUpdate() {
+  //   // async componentDidMount() {
+  //   let data3 = this.props.transaction.map((x) => ({
+  //     categoryName: x.title,
+  //     categoryValue: x.amount,
+  //     labelText: x.title + ": " + x.amount + " $",
+  //   }));
+  //   // debugger;
+  //   this.setState({ data3: data3 });
+  // }
   render() {
+    let { transaction } = this.props;
+    console.log("fi");
     console.log(this.props.transaction);
     // debugger;
-    let data1 = this.props.transaction.map((item, index) => ({
-      categoryName: item.title,
-      categoryValue: item.amount,
-      labelText: item.title + ": " + item.amount + " $",
-    }));
-    console.log("test");
+    let data1 = this.props.transaction.map((item, index) => [
+      {
+        categoryName: item.title,
+        categoryValue: item.amount,
+        labelText: item.title + ": " + item.amount + " $",
+      },
+    ]);
 
-    // let data1 = [
-    //   {
-    //     categoryName: "test1",
-    //     categoryValue: "350.0",
-    //     labelText: "test1: 350.0 $",
-    //   },
-    //   {
-    //     categoryName: "ssjj",
-    //     categoryValue: "78.0",
-    //     labelText: " $",
-    //   },
-    // ];
-    console.log(data1);
+    console.log("test");
+    let data8 = this.props.transaction.map(function (x, y) {
+      return {
+        x: x.title,
+        y: x.amount,
+        text: x.title + ": " + x.amount + " $",
+      };
+    });
+    let data2 = [
+      {
+        x: "test1",
+        y: "350.0",
+        text: "test1: 350.0 $",
+      },
+      {
+        x: "ssjj",
+        y: "78.0",
+        text: " $",
+      },
+    ];
+    console.log(data2);
+    console.log(this.state.data3);
+    console.log(data8);
+
     return (
       <div className="control-pane">
         <div className="control-section">
@@ -64,9 +95,9 @@ export class PieChart extends React.Component {
             <AccumulationSeriesCollectionDirective>
               <AccumulationSeriesDirective
                 name="Category"
-                dataSource={data1}
-                xName="categoryName"
-                yName="categoryValue"
+                dataSource={this.state.data3}
+                xName="x"
+                yName="y"
                 innerRadius={this.props.innerRadius}
                 startAngle={this.props.startAngle}
                 endAngle={this.props.endAngle}
@@ -74,7 +105,7 @@ export class PieChart extends React.Component {
                   visible: true,
                   position: "Outside",
                   connectorStyle: { length: "10%" },
-                  name: "labelText",
+                  name: "text",
                 }}
               ></AccumulationSeriesDirective>
             </AccumulationSeriesCollectionDirective>
