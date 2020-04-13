@@ -203,10 +203,48 @@ class TransactionsController extends Controller
             'transactions' => $result
         ], 200);
     }
-    public function barchart(Request $request)
+    public function barChartIncome(Request $request)
        {
         $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
+        ->where('type', 'income')
+        ->get();
+        $year=$request->year;
+        $result=[];
+        for($i=1;$i<=12;$i++)
+        {
+            $countOfMonth=0;
+
+            $myDate = date('Y-m',strtotime($year.'-'.$i.'-1'));
+            foreach($transactions as $transaction){
+                $startDate=date('Y-m',strtotime($transaction->start_date));
+                if (!$transaction->end_date)
+                    $endDate = null;
+                    else
+                    $endDate=date('Y-m',strtotime($transaction->end_date));
+                if(($startDate<=$myDate)&&($endDate>=$myDate)
+                  ||($startDate==$myDate)&&($endDate==null)){
+                        $countOfMonth+=$transaction->amount;
+                    }}
+            $result[]=$countOfMonth;
+            }
+                    if(!$transactions){
+            return response()->json([
+                'success' => false,
+                'message' => 'No Incomes found'
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'transactions' => $result
+        ], 200);
+       }
+       public function barChartExpense(Request $request)
+       {
+        $userId = auth()->user()->id;
+        $transactions = Transaction::where('users_id', $userId)
+        ->where('type', '<>','income')
         ->get();
         $year=$request->year;
         $result=[];

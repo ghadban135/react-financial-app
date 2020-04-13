@@ -33,7 +33,8 @@ Route::delete('/transaction/{id}', 'TransactionsController@destroy');
 
 Route::get('/pieChartMonth', 'TransactionsController@transactionPercentage');
 Route::get('/pieChartYear', 'TransactionsController@transactionPercentageYear');
-Route::get('/barChart', 'TransactionsController@barchart');
+Route::get('/barChartIncome', 'TransactionsController@barChartIncome');
+Route::get('/barChartExpense', 'TransactionsController@barChartExpense');
 
 Route::get('/currencies', 'CurrenciesController@index');
 Route::get('/currency/{id}', 'CurrenciesController@show');
