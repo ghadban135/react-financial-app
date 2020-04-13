@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Transaction;
 use App\Category;
+use App\Currency;
 use App\Http\Requests\TransactionRequest;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,9 @@ class TransactionsController extends Controller
         $transactions = Transaction::where('users_id', $userId)
         ->with('category')
         ->get();
+        $currencyData = Currency::where('id', $currencyId)->first();
+         foreach ($transactions as $transaction)
+                $transaction->amount*=$currencyData->code;
         $total = 0;
         $totalIncomes = 0;
         $totalExpenses = 0;
@@ -108,6 +112,10 @@ class TransactionsController extends Controller
         $transactions = Transaction::where('users_id', $userId)
         ->with('category')
         ->get();
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        foreach ($transactions as $transaction)
+                $transaction->amount*=$currencyData->code;
         $total = 0;
         $totalIncomes = 0;
         $totalExpenses = 0;
@@ -181,6 +189,10 @@ class TransactionsController extends Controller
         $transactions = Transaction::where('users_id', $userId)
         ->with('category')
         ->get();
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        foreach ($transactions as $transaction)
+                $transaction->amount*=$currencyData->code;
         $total = 0;
         $totalIncomes = 0;
         $totalExpenses = 0;
@@ -287,6 +299,10 @@ class TransactionsController extends Controller
         $transactions = Transaction::where('users_id', $userId)
         ->where('type', 'income')
         ->get();
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        foreach ($transactions as $transaction)
+                $transaction->amount*=$currencyData->code;
         $year=$request->year;
         $result=[];
         for($i=1;$i<=12;$i++)
@@ -324,6 +340,10 @@ class TransactionsController extends Controller
         $transactions = Transaction::where('users_id', $userId)
         ->where('type', '<>','income')
         ->get();
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        foreach ($transactions as $transaction)
+                $transaction->amount*=$currencyData->code;
         $year=$request->year;
         $result=[];
         for($i=1;$i<=12;$i++)
@@ -362,7 +382,10 @@ class TransactionsController extends Controller
         ->where('type', 'income')
         ->with('category')
         ->get();
-
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        foreach ($transactions as $transaction)
+                $transaction->amount*=$currencyData->code;
         if(!$transactions){
             return response()->json([
                 'success' => false,
@@ -382,6 +405,10 @@ class TransactionsController extends Controller
         ->where('type', 'expense')
         ->with('category')
         ->get();
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        foreach ($transactions as $transaction)
+                $transaction->amount*=$currencyData->code;
         if(!$transactions){
             return response()->json([
                 'success' => false,
@@ -401,7 +428,10 @@ class TransactionsController extends Controller
         ->where('type', 'saving expense')
         // ->with('category')
         ->get();
-
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        foreach ($transactions as $transaction)
+                $transaction->amount*=$currencyData->code;
         if(!$transactions){
             return response()->json([
                 'success' => false,
@@ -434,11 +464,13 @@ class TransactionsController extends Controller
         $userId = auth()->user()->id;
         $currencyId=auth()->user()->currencies_id;
         //$inputs = $request->all();
-
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        $currencyResult = $request->amount/$currencyData->code;
         $transactions = Transaction::create([
             'title' => $request->title,
             'description' => $request->description,
-            'amount' => $request->amount,
+            'amount' => $currencyResult,
             'categories_id' => $request->categories_id,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -517,10 +549,13 @@ class TransactionsController extends Controller
             {
         $userId = auth()->user()->id;
         $transactions = Transaction::where('id', $id)->first();
+        $currencyId = auth()->user()->currencies_id;
+        $currencyData = Currency::where('id', $currencyId)->first();
+        $currencyResult = $request->amount/$currencyData->code;
         $transactions->update([
             'title' => $request->title,
             'description' => $request->description,
-            'amount' => $request->amount,
+            'amount' => $currencyResult,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'user_id' => $userId,

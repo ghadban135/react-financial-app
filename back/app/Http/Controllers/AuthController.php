@@ -9,6 +9,20 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    public function updateCurrency(Request $request)
+    {
+            {
+        $userId = auth()->user()->id;
+        $transactions = User::where('id', $userId)->first();
+        $transactions->update([
+            'currencies_id' => $request->currencies_id,
+        ]);;
+        $transactions->save();
+        return response()->json([
+            'success' => true,
+        ], 201);
+    }
+    }
 
     public function register(RegisterRequest $request)
     {

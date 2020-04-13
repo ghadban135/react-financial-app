@@ -19,10 +19,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      overAllSpent: 1000,
-      mostSpent: 500,
-      overAllIncome: 1000,
-      budget: 0,
+
     };
   }
   render() {

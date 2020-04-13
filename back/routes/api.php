@@ -23,10 +23,12 @@ Route::post('/logout', 'AuthController@logout');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
+Route::post('/updateCurrency', 'AuthController@updateCurrency');
 Route::get('/ping', function(){
     return response()->json([
                 'success' => true,], 500);
 });
+
 
 Route::get('/incomes', 'TransactionsController@incomeIndex');
 Route::get('/expenses', 'TransactionsController@expenseIndex');
