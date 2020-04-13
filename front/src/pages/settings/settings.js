@@ -18,11 +18,11 @@ import {
   MDBModalHeader,
 } from "mdbreact";
 
-const CurrencyOptions = [
-  { value: "DOLLAR", label: "$" },
-  { value: "LBP", label: "LBP" },
-  { value: "EURO", label: "€" },
-];
+// const CurrencyOptions = [
+//   { value: "DOLLAR", label: "$" },
+//   { value: "LBP", label: "LBP" },
+//   { value: "EURO", label: "€" },
+// ];
 
 class Setting extends React.Component {
   constructor(props) {
@@ -34,6 +34,7 @@ class Setting extends React.Component {
       name: "",
       editValueIndex: "",
       editValue: "",
+      CurrencyOptions: [],
       // token: ""
     };
   }
@@ -51,8 +52,44 @@ class Setting extends React.Component {
     this.setState({ selectedCurrency });
     console.log(`Option selected:`, selectedCurrency);
   };
+  getCurrencies = async () => {
+    const response4 = await fetch(`http://localhost:8000/api/currencies`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: "application/json",
+      },
+    });
+    const result4 = await response4.json();
+
+    if (result4.success) {
+      this.setState({
+        CurrencyOptions: result4.currencies.map((item) => {
+          const currentCurrency = {
+            value: item.id,
+            label: item.name,
+          };
+          return currentCurrency;
+        }),
+      });
+    }
+  };
   onSubmit1 = async (e) => {
     e.preventDefault();
+    const body = new FormData();
+    body.append("currencies_id", this.state.selectedCurrency.value);
+    debugger;
+    const response = await fetch(`http://localhost:8000/api/updateCurrency`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: "application/json",
+      },
+      body,
+    });
+    const result = await response.json();
+    if (result.success)
+      Swal.fire("Good job!", "Currency Edit Successfully", "success");
   };
 
   onSubmit = async (e) => {
@@ -106,6 +143,7 @@ class Setting extends React.Component {
   };
 
   async componentDidMount() {
+    this.getCurrencies();
     this.getCategories();
     // const token = localStorage.token;
     // const token = localStorage.getItem("token"); //same as above
@@ -294,7 +332,7 @@ class Setting extends React.Component {
               <Select
                 value={selectedCurrency}
                 onChange={this.handleCurrencyChange}
-                options={CurrencyOptions}
+                options={this.state.CurrencyOptions}
                 placeholder="Display Currency"
               />
               <br />

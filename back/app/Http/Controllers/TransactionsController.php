@@ -19,6 +19,7 @@ class TransactionsController extends Controller
         $transactions = Transaction::where('users_id', $userId)
         ->with('category')
         ->get();
+        $currencyId = auth()->user()->currencies_id;
         $currencyData = Currency::where('id', $currencyId)->first();
          foreach ($transactions as $transaction)
                 $transaction->amount*=$currencyData->code;
