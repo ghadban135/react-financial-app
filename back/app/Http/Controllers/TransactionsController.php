@@ -62,23 +62,28 @@ class TransactionsController extends Controller
                     $incomeResult=
                         ['title' => 'free',
                         'amount' => $totalIncomes-$totalExpenses,
-                        'percentage' => 100-$totalExpenses*100/$totalIncomes,]
+                        // 'percentage' => 100-$totalExpenses*100/$totalIncomes,
+                        // comment percentage because we are not used and some case =0
+                        ]
                     ;
                     $expensResult=
                         ['title' => 'Expenses',
                         'amount' => $totalExpenses,
-                        'percentage' => $totalExpenses*100/$totalIncomes,]
+                        // 'percentage' => $totalExpenses*100/$totalIncomes,
+                        ]
                     ;
                  } else if($totalIncomes<$totalExpenses){
                     $incomeResult=
                         ['title' => 'Incomes',
                         'amount' => $totalIncomes,
-                        'percentage' => $totalIncomes*100/$totalExpenses,]
+                        // 'percentage' => $totalIncomes*100/$totalExpenses,
+                        ]
                     ;
                     $expensResult=
                         ['title' => 'cost overruns',
                         'amount' => $totalExpenses-$totalIncomes,
-                        'percentage' => 100-$totalIncomes*100/$totalExpenses,];
+                        // 'percentage' => 100-$totalIncomes*100/$totalExpenses,
+                    ];
                 }
 
 

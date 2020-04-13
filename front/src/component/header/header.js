@@ -1,8 +1,9 @@
 import React from "react";
 import { Navbar, Nav, FormControl, Button, Form } from "react-bootstrap";
+import "./header.css";
 function Header() {
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark" className="navChangeColor">
       <Nav className="mr-auto">
         <Nav.Link href="/">
           <strong>Financial App</strong>
@@ -12,11 +13,6 @@ function Header() {
         <Nav.Link href="expense">Expenses</Nav.Link>
         <Nav.Link href="savingPlan">Saving Plans</Nav.Link>
         <Nav.Link href="settings">Settings</Nav.Link>
-        {/* <Nav.Link href="logout">
-          <button onClick={() => localStorage.setItem("token", "")}>
-            Log out
-          </button>
-        </Nav.Link> */}
       </Nav>
     </Navbar>
   );

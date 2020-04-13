@@ -12,13 +12,37 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   margin: auto;
-  margin-top: 10px;
+  margin-top: 25px;
   margin-bottom: 30px;
-  width: 60%;
-  color: whitesmoke;
-  background-color: #212121;
+  width: 100%;
+  /* color: black; */
+  /* background-color: #212121; */
+}
+.dashboardPart1 {
+  border: thin solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  padding: 16px;
+  padding-right: 160px;
+  margin-right: 8px;
+  background-color: #fafafa;
+  color: rgba(0, 0, 0, 0.87);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+.dashboardPart2 {
+  margin-bottom: 8px;
+  font-size: 0.625rem;
+  letter-spacing: 0.1666666667em;
+  font-weight: 500;
+  line-height: 1rem;
+  text-transform: uppercase;
+}
+.dashboardPart3 {
+  font-size: 1.5rem;
+  letter-spacing: 0.0125em;
+  color: #2196f3;
 }
 .boxContainer p {
   margin: 10px;

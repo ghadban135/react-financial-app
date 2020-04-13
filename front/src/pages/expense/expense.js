@@ -4,8 +4,6 @@ import AddCategory from "../../component/addCategory/addCategory";
 import PopupExpenseForm from "../../component/insertExpenseForm/popupExpenseForm";
 import Swal from "sweetalert2";
 import Select from "react-select";
-import PieChart from "../../component/pieChart/pieChart";
-import BarChart from "../../component/barChart/barChart";
 import {
   MDBContainer,
   MDBRow,
@@ -674,10 +672,7 @@ class expense extends React.Component {
             </MDBBtn>
           </div>
         </div>
-        <div className="chartContainer">
-          {/* <PieChart transaction={this.props.transaction} /> */}
-          {/* <BarChart /> */}
-        </div>
+        <div className="chartContainer"></div>
         <div className="chartContainer">
           <PieChart22 transaction={this.state.pieValue} />
           <BarChart22
