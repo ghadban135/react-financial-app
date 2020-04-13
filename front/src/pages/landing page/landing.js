@@ -2,8 +2,6 @@ import React from "react";
 import FormPage from "../../component/userSignUp/userSignUp";
 import { StaticBarChart } from "../../component/staticBarChart/staticBarChart";
 import { StaticPieChart } from "../../component/staticPieChart/staticPieChart";
-import Header from "../../component/header/header";
-import Footer from "../../component/footer/footer";
 import "./landing.css";
 
 class LandingPage extends React.Component {
@@ -11,19 +9,18 @@ class LandingPage extends React.Component {
     super(props);
     this.state = {};
   }
-async componentDidMount() {
-  const response = await fetch(`http://localhost:8000/api/ping`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${localStorage.token}`,
-      Accept: "application/json",
-    },
-  });
-  const result = await response.json();
-  if (result.success)
-  window.location = '/dashboard';
-  console.log(result);
-}
+  async componentDidMount() {
+    const response = await fetch(`http://localhost:8000/api/ping`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: "application/json",
+      },
+    });
+    const result = await response.json();
+    if (result.success) window.location = "/dashboard";
+    console.log(result);
+  }
   render() {
     return (
       <div>
