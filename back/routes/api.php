@@ -23,6 +23,11 @@ Route::post('/logout', 'AuthController@logout');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
+Route::get('/ping', function(){
+    return response()->json([
+                'success' => true,], 500);
+});
+
 Route::get('/incomes', 'TransactionsController@incomeIndex');
 Route::get('/expenses', 'TransactionsController@expenseIndex');
 Route::get('/savingPlans', 'TransactionsController@savingPlanIndex');
@@ -35,6 +40,7 @@ Route::get('/pieChartMonth', 'TransactionsController@transactionPercentage');
 Route::get('/pieChartYear', 'TransactionsController@transactionPercentageYear');
 Route::get('/barChartIncome', 'TransactionsController@barChartIncome');
 Route::get('/barChartExpense', 'TransactionsController@barChartExpense');
+Route::get('/pieChartMain', 'TransactionsController@transactionDashboard');
 
 Route::get('/currencies', 'CurrenciesController@index');
 Route::get('/currency/{id}', 'CurrenciesController@show');

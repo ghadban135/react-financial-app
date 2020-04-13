@@ -64,6 +64,7 @@ class SignIN extends React.Component {
         icon: "success",
         title: "Signed in successfully",
       });
+      window.location = '/dashboard'
     } else {
       Swal.fire("Cancelled", " Invalid Email or password.", "error");
     }

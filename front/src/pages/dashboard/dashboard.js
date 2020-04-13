@@ -128,6 +128,25 @@ class dashBoard extends React.Component {
         currentPieValue: incomeValue,
       });
     }
+      const response6 = await fetch(
+        `http://localhost:8000/api/pieChartMain?year=${this.state.currentYear}&month=${this.state.currentMonth}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      const result6 = await response6.json();
+      if (result6.success) {
+        this.setState({
+          totalIncomes: result6.TI,
+          totalExpenses: result6.TE,
+          budget: result6.B,
+          mostSpent: result6.MS,
+        });
+      }
+      console.log(result6);
   }
   render() {
     return (
@@ -135,19 +154,19 @@ class dashBoard extends React.Component {
         <div className="boxContainer">
           <div className="dashboardPart1">
             <div className="dashboardPart2">Overall Income</div>
-            <div className="dashboardPart3">{this.props.overAllIncome}</div>
+            <div className="dashboardPart3">{this.state.totalIncomes}</div>
           </div>
           <div className="dashboardPart1">
             <div className="dashboardPart2">overall Spent</div>
-            <div className="dashboardPart3">{this.props.overAllSpent}</div>
+            <div className="dashboardPart3">{this.state.totalExpenses}</div>
           </div>
           <div className="dashboardPart1">
             <div className="dashboardPart2">Most Spent</div>
-            <div className="dashboardPart3">{this.props.mostSpent}</div>
+            <div className="dashboardPart3">{this.state.mostSpent}</div>
           </div>
           <div className="dashboardPart1">
             <div className="dashboardPart2">Budget </div>
-            <div className="dashboardPart3">{this.props.budget}</div>
+            <div className="dashboardPart3">{this.state.budget}</div>
           </div>
         </div>
         <div

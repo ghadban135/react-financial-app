@@ -102,6 +102,79 @@ class TransactionsController extends Controller
             'transactions' => $result
         ], 200);
     }
+            public function transactionDashboard(Request $request)
+       {
+        $userId = auth()->user()->id;
+        $transactions = Transaction::where('users_id', $userId)
+        ->with('category')
+        ->get();
+        $total = 0;
+        $totalIncomes = 0;
+        $totalExpenses = 0;
+        $result=[];
+        $month = $request->month;
+        $year = $request->year;
+        $myDate = date('Y-m',strtotime($year."-".$month."-1"));
+        $max=0;
+        foreach ($transactions as $transaction)
+            if ($max<$transaction->amount&&$transaction->type=="expense")
+            $max=$transaction->amount;
+            $mostSpent=$max;
+            foreach ($transactions as $transaction)
+            if($transaction->amount==$max&&$transaction->type=="expense")
+            $mostSpent=$transaction->title;
+            foreach($transactions as $transaction){
+                $startDate=date('Y-m',strtotime($transaction->start_date));
+                if (!$transaction->end_date)
+                    $endDate = null;
+                    else
+                    $endDate=date('Y-m',strtotime($transaction->end_date));
+                if((($startDate<=$myDate)&&($endDate>=$myDate))
+                  ||(($startDate==$myDate)))
+                $total+=$transaction->amount;
+            }
+            foreach($transactions as $transaction){
+                $startDate=date('Y-m',strtotime($transaction->start_date));
+                if (!$transaction->end_date)
+                    $endDate = null;
+                    else
+                    $endDate=date('Y-m',strtotime($transaction->end_date));
+                if((($startDate<=$myDate)&&($endDate>=$myDate))
+                  ||(($startDate==$myDate))){
+                        $x=$transaction->amount;
+                      $item = (($x/$total)*100);
+                       if($transaction->type=="income")
+                      $totalIncomes+=$x;
+                      else
+                      $totalExpenses+=$x;
+                      $result[]=[
+                        'title' => $transaction->title,
+                        'amount' => $transaction->amount,
+                        'type' => $transaction->type,
+                        'percentage' => $item,
+                        'category' => $transaction->category->name
+                    ];
+                }
+            }
+            $budget=$totalIncomes-$totalExpenses;
+
+
+        if(!$transactions){
+            return response()->json([
+                'success' => false,
+                'message' => 'No Incomes found'
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'TI'=> $totalIncomes,
+            'TE'=>$totalExpenses,
+            'B' => $budget,
+            'MS'=>$mostSpent,
+            'transactions' => $result
+        ], 200);
+    }
     public function transactionPercentageYear(Request $request)
        { //the result is wrong in this function
         $userId = auth()->user()->id;
