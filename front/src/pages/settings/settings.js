@@ -78,7 +78,7 @@ class Setting extends React.Component {
     e.preventDefault();
     const body = new FormData();
     body.append("currencies_id", this.state.selectedCurrency.value);
-    debugger;
+    // debugger;
     const response = await fetch(`http://localhost:8000/api/updateCurrency`, {
       method: "POST",
       headers: {
