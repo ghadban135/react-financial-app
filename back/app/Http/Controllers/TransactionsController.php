@@ -31,8 +31,8 @@ class TransactionsController extends Controller
                     $endDate = null;
                     else
                     $endDate=date('Y-m',strtotime($transaction->end_date));
-                if(($startDate<=$myDate)&&($endDate>=$myDate)
-                  ||($startDate==$myDate)&&($endDate==null))
+                if((($startDate<=$myDate)&&($endDate>=$myDate))
+                  ||(($startDate==$myDate)))
                 $total+=$transaction->amount;
             }
             foreach($transactions as $transaction){
@@ -41,8 +41,8 @@ class TransactionsController extends Controller
                     $endDate = null;
                     else
                     $endDate=date('Y-m',strtotime($transaction->end_date));
-                if(($startDate<=$myDate)&&($endDate>=$myDate)
-                  ||($startDate==$myDate)&&($endDate==null)){
+                if((($startDate<=$myDate)&&($endDate>=$myDate))
+                  ||(($startDate==$myDate))){
                         $x=$transaction->amount;
                       $item = (($x/$total)*100);
                        if($transaction->type=="income")
@@ -98,7 +98,7 @@ class TransactionsController extends Controller
         ], 200);
     }
     public function transactionPercentageYear(Request $request)
-       {
+       { //the result is wrong in this function
         $userId = auth()->user()->id;
         $transactions = Transaction::where('users_id', $userId)
         ->with('category')
@@ -222,8 +222,8 @@ class TransactionsController extends Controller
                     $endDate = null;
                     else
                     $endDate=date('Y-m',strtotime($transaction->end_date));
-                if(($startDate<=$myDate)&&($endDate>=$myDate)
-                  ||($startDate==$myDate)&&($endDate==null)){
+                if((($startDate<=$myDate)&&($endDate>=$myDate))
+                  ||($startDate==$myDate)){
                         $countOfMonth+=$transaction->amount;
                     }}
             $result[]=$countOfMonth;
@@ -259,8 +259,8 @@ class TransactionsController extends Controller
                     $endDate = null;
                     else
                     $endDate=date('Y-m',strtotime($transaction->end_date));
-                if(($startDate<=$myDate)&&($endDate>=$myDate)
-                  ||($startDate==$myDate)&&($endDate==null)){
+                if((($startDate<=$myDate)&&($endDate>=$myDate))
+                  ||($startDate==$myDate)){
                         $countOfMonth+=$transaction->amount;
                     }}
             $result[]=$countOfMonth;

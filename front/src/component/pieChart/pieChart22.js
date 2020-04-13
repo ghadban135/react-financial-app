@@ -45,7 +45,7 @@ class PieChart22 extends React.Component {
       parseInt(x.amount),
     ]);
     data3.unshift(["Task", "Hours per Day"]);
-    console.log(data3);
+    // console.log(data3);
     return (
       <div className="App">
         <Chart

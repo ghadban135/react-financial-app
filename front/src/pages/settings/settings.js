@@ -19,8 +19,9 @@ import {
 } from "mdbreact";
 
 const CurrencyOptions = [
-  { value: "Weekly", label: "Weekly" },
-  { value: "Monthly", label: "Monthly" },
+  { value: "DOLLAR", label: "$" },
+  { value: "LBP", label: "LBP" },
+  { value: "EURO", label: "€" },
 ];
 
 class Setting extends React.Component {
@@ -49,6 +50,9 @@ class Setting extends React.Component {
   handleCurrencyChange = (selectedCurrency) => {
     this.setState({ selectedCurrency });
     console.log(`Option selected:`, selectedCurrency);
+  };
+  onSubmit1 = async (e) => {
+    e.preventDefault();
   };
 
   onSubmit = async (e) => {
@@ -285,6 +289,7 @@ class Setting extends React.Component {
                 type="text"
                 valueDefault="Financial App"
                 validate
+                disabled
               />
               <Select
                 value={selectedCurrency}
