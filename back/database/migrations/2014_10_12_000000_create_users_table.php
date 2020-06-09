@@ -20,8 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('image')->nullable()->unique();
-            $table->integer('currencies_id',);
-		    $table->foreign('currencies_id')->references('id')->on('currencies');
+            $table->integer('currencies_id');
             $table->rememberToken();
             $table->timestamps();
         });
